@@ -18,8 +18,8 @@ router
   .get(getAllTours)
   .post(
     [
-      check("name", "Name is required").not().isEmpty(),
-      check("price", "price is required").exists(),
+      check("name", "A tour must have a name").not().isEmpty(),
+      check("price", "A tour must have a price").exists(),
     ],
     createTour
   );
