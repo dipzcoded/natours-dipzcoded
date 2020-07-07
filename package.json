@@ -1,0 +1,27 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "Learning Node Express and Monogodb",
+  "main": "app.js",
+  "scripts": {
+    "server:dev": "nodemon server.js",
+    "server:prod": "NODE_ENV=production nodemon server.js"
+  },
+  "author": "Akerele Oladipupo",
+  "license": "ISC",
+  "dependencies": {
+    "-": "0.0.1",
+    "D": "^1.0.0",
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.22",
+    "morgan": "^1.10.0",
+    "valid-objectid": "0.0.2"
+  },
+  "devDependencies": {}
+}
