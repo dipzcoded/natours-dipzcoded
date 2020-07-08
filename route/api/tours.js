@@ -20,6 +20,10 @@ router
     [
       check("name", "A tour must have a name").not().isEmpty(),
       check("price", "A tour must have a price").exists(),
+      check("duration", "A tour must have a duration").exists(),
+      check("maxGroupSize", "A tour must have a max group size").exists(),
+      check("summary", "A tour must have a description").not().isEmpty(),
+      check("imageCover", "A tour must have a image cover").not().isEmpty(),
     ],
     createTour
   );

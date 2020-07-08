@@ -1,24 +1,39 @@
 const { validationResult } = require("express-validator");
 const Tour = require("../model/Tour");
 
-exports.getAllTours = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    requestedAt: req.requestTime,
-    // result: toursData.length,
-    // data: {
-    //   tours: toursData,
-    // },
-  });
+exports.getAllTours = async (req, res) => {
+  try {
+    const toursData = await Tour.find();
+
+    return res.status(200).json({
+      status: "success",
+      requestedAt: req.requestTime,
+      result: toursData.length,
+      data: {
+        toursData,
+      },
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
 };
 
-exports.getTour = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    // data: {
-    //   tour: tourData,
-    // },
-  });
+exports.getTour = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const tourData = await Tour.findById(id);
+    return res.status(200).json({
+      status: "success",
+      data: {
+        tourData,
+      },
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error!");
+  }
 };
 
 exports.createTour = async (req, res) => {
@@ -54,19 +69,40 @@ exports.createTour = async (req, res) => {
   }
 };
 
-exports.updateTour = (req, res) => {
-  res.status(200).json({
-    status: "success",
-    data: {
-      tour: "<Updated tour here.....>",
-    },
-  });
+exports.updateTour = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const tourData = await Tour.findByIdAndUpdate(
+      id,
+      { $set: req.body },
+      { new: true }
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        tourData,
+      },
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error!");
+  }
 };
 
-exports.deleteTour = (req, res) => {
-  res.status(204).json({
-    status: "success",
-    message: "delete successful",
-    data: null,
-  });
+exports.deleteTour = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Tour.findByIdAndDelete(id);
+
+    return res.status(204).json({
+      status: "success",
+      message: "delete successful",
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error!");
+  }
 };
