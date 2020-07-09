@@ -1,31 +1,27 @@
 const { validationResult } = require("express-validator");
 const Tour = require("../model/Tour");
+const APIFeatures = require("../utils/apiFeatures");
+
+exports.aliasTopTours = (req, res, next) => {
+  (req.query.limit = "5"),
+    (req.query.sort = "-ratingsAverage,price"),
+    (req.query.fields = "name,price,ratingsAverage,summary,difficulty");
+
+  next();
+};
 
 exports.getAllTours = async (req, res) => {
   try {
     // Build Query
-    const queryObj = { ...req.query };
-    const excludedFields = ["page", "sort", "limit", "fields"];
-    excludedFields.forEach((el) => delete queryObj[el]);
 
-    console.log(queryObj);
+    // Execute query
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sorting()
+      .limitFields()
+      .pagination();
 
-    let toursData;
-
-    // if (queryObj) {
-    //   toursData =  Tour.find(queryObj);
-
-    //   return res.status(200).json({
-    //     status: "success",
-    //     requestedAt: req.requestTime,
-    //     result: toursData.length,
-    //     data: {
-    //       toursData,
-    //     },
-    //   });
-    // }
-
-    toursData = await Tour.find(queryObj);
+    const toursData = await features.query;
 
     return res.status(200).json({
       status: "success",
