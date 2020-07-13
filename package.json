@@ -4,8 +4,9 @@
   "description": "Learning Node Express and Monogodb",
   "main": "app.js",
   "scripts": {
-    "server:dev": "nodemon server.js",
-    "server:prod": "NODE_ENV=production nodemon server.js"
+    "server": "nodemon server.js",
+    "server:prod": "NODE_ENV=production nodemon server.js",
+    "debug": "ndb server.js"
   },
   "author": "Akerele Oladipupo",
   "license": "ISC",

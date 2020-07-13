@@ -1,53 +1,8 @@
 const { validationResult } = require("express-validator");
 const Tour = require("../model/Tour");
 const APIFeatures = require("../utils/apiFeatures");
-
-exports.validateFields = (req, res, next) => {
-  const { ratingsAverage, difficulty, priceDiscount, price } = req.body;
-  const parseRatings = parseInt(ratingsAverage);
-  const parseDiscount = parseInt(priceDiscount);
-  const parsePrice = parseInt(price);
-
-  if (parseRatings < 1 || parseRatings > 5) {
-    return res
-      .status(400)
-      .json({ errors: [{ msg: "The average rating is 1 to 5" }] });
-  } else if (
-    difficulty !== "easy" &&
-    difficulty !== "medium" &&
-    difficulty !== "difficult"
-  ) {
-    return res.status(400).json({
-      errors: [
-        {
-          msg: "The difficulty should only be either easy, medium or difficult",
-        },
-      ],
-    });
-  } else if (parseDiscount > parsePrice) {
-    return res.status(400).json({
-      errors: [
-        {
-          msg: `Discount price ${parseDiscount} must be less than ${price} `,
-        },
-      ],
-    });
-  }
-  next();
-};
-
-exports.aliasTopTours = (req, res, next) => {
-  (req.query.limit = "5"),
-    (req.query.sort = "-ratingsAverage,price"),
-    (req.query.fields = "name,price,ratingsAverage,summary,difficulty");
-
-  next();
-};
-
 exports.getAllTours = async (req, res) => {
   try {
-    // Build Query
-
     // Execute query
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
