@@ -3,8 +3,10 @@ const Tour = require("../model/Tour");
 const APIFeatures = require("../utils/apiFeatures");
 
 exports.validateFields = (req, res, next) => {
-  const { ratingsAverage, difficulty } = req.body;
+  const { ratingsAverage, difficulty, priceDiscount, price } = req.body;
   const parseRatings = parseInt(ratingsAverage);
+  const parseDiscount = parseInt(priceDiscount);
+  const parsePrice = parseInt(price);
 
   if (parseRatings < 1 || parseRatings > 5) {
     return res
@@ -22,8 +24,15 @@ exports.validateFields = (req, res, next) => {
         },
       ],
     });
+  } else if (parseDiscount > parsePrice) {
+    return res.status(400).json({
+      errors: [
+        {
+          msg: `Discount price ${parseDiscount} must be less than ${price} `,
+        },
+      ],
+    });
   }
-
   next();
 };
 

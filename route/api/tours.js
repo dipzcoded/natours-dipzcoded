@@ -48,7 +48,7 @@ router
 router
   .route("/:id")
   .get(getTour)
-  .patch(checkValidators, updateTour)
+  .patch([validateFields, checkValidators], updateTour)
   .delete(deleteTour);
 
 module.exports = router;
