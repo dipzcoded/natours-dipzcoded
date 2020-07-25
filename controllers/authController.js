@@ -9,7 +9,14 @@ exports.signUp = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { name, email, photo, password, confirmPassword } = req.body;
+  const {
+    name,
+    email,
+    photo,
+    password,
+    confirmPassword,
+    passwordChangedAt,
+  } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -22,6 +29,7 @@ exports.signUp = async (req, res) => {
       name,
       email,
       password,
+      passwordChangedAt,
     });
 
     if (photo) {

@@ -18,6 +18,9 @@ const {
   validateUpdateField,
 } = require("./../../middlewares/tourMiddleware");
 
+// auth middleware
+const { authRouting } = require("../../middlewares/authMiddleware");
+
 // get top cheap tours
 router.route("/top-5-cheap").get(aliasTopTours, getAllTours);
 
@@ -28,7 +31,7 @@ router.route("/monthly-plan/:year").get(getMonthlyPlan);
 // getting all tours and creating tours
 router
   .route("/")
-  .get(getAllTours)
+  .get(authRouting, getAllTours)
   .post([validateFields, checkValidators], createTour);
 router
   .route("/:id")

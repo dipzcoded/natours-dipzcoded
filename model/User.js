@@ -23,12 +23,19 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
     select: false,
   },
-
-  confirmPassword: {
-    type: String,
-    required: true,
-    select: false,
-  },
+  passwordChangedAt: Date,
 });
+
+userSchema.methods.changePasswordAfter = function (jWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changeTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    return jWTTimestamp < changeTimestamp;
+  }
+
+  return false;
+};
 
 module.exports = mongoose.model("user", userSchema);
