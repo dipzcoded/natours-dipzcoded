@@ -1,4 +1,5 @@
 const { check } = require("express-validator");
+// const Tour = require("../model/Tour");
 
 exports.checkValidators = [
   check("name")
@@ -47,6 +48,34 @@ exports.validateFields = (req, res, next) => {
       ],
     });
   }
+  next();
+};
+
+exports.validateUpdateField = (req, res, next) => {
+  if (req.body.difficulty) {
+    if (
+      req.body.difficulty !== "easy" ||
+      (req.body.difficulty !== "medium" && req.body.difficulty !== "difficult")
+    ) {
+      return res.status(400).json({
+        errors: [
+          {
+            msg:
+              "The difficulty should only be either easy, medium or difficult",
+          },
+        ],
+      });
+    }
+  }
+
+  if (req.body.ratingsAverage) {
+    if (req.body.ratingsAverage < 1 || req.body.ratingsAverage > 5) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "The average rating is 1 to 5" }] });
+    }
+  }
+
   next();
 };
 

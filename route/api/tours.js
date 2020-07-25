@@ -1,5 +1,4 @@
 const express = require("express");
-
 const router = express.Router();
 const {
   getAllTours,
@@ -16,6 +15,7 @@ const {
   validateFields,
   aliasTopTours,
   checkValidators,
+  validateUpdateField,
 } = require("./../../middlewares/tourMiddleware");
 
 // get top cheap tours
@@ -33,7 +33,7 @@ router
 router
   .route("/:id")
   .get(getTour)
-  .patch([validateFields, checkValidators], updateTour)
+  .patch(validateUpdateField, updateTour)
   .delete(deleteTour);
 
 module.exports = router;

@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+// Handlers
 const {
   getAllUsers,
   getUser,
@@ -8,6 +10,7 @@ const {
   deleteUser,
 } = require("../../controllers/userController");
 
+// Routing
 router.route("/").get(getAllUsers).post(createUser);
 router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 

@@ -10,6 +10,16 @@ exports.getAllTours = async (req, res) => {
       .limitFields()
       .pagination();
 
+    if (req.query.page) {
+      const skipVal = (req.query.page - 1) * req.query.limit * 1;
+      const countTot = await Tour.countDocuments();
+      console.log(countTot);
+      console.log(skipVal);
+      if (skipVal >= countTot - 1) {
+        return res.status(404).json({ errors: [{ msg: "Page not found" }] });
+      }
+    }
+
     const toursData = await features.query;
 
     return res.status(200).json({
@@ -31,6 +41,11 @@ exports.getTour = async (req, res) => {
 
   try {
     const tourData = await Tour.findById(id);
+
+    if (!tourData) {
+      return res.status(404).json({ msg: "Tour not found with that ID" });
+    }
+
     return res.status(200).json({
       status: "success",
       data: {
@@ -39,6 +54,11 @@ exports.getTour = async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
+
+    if (error.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Invalid tour id" });
+    }
+
     res.status(500).send("Server Error!");
   }
 };
@@ -77,28 +97,30 @@ exports.createTour = async (req, res) => {
 };
 
 exports.updateTour = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
   const id = req.params.id;
 
   try {
-    const tourData = await Tour.findByIdAndUpdate(
-      id,
-      { $set: req.body },
-      { new: true }
-    );
+    let tour = await Tour.findById(id);
+
+    if (!tour) {
+      return res.status(404).json({ msg: "Tour not found with that ID" });
+    }
+
+    tour = await Tour.findByIdAndUpdate(id, { $set: req.body }, { new: true });
 
     res.status(200).json({
       status: "success",
       data: {
-        tourData,
+        tourData: tour,
       },
     });
   } catch (error) {
     console.error(error.message);
+
+    if (error.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Invalid tour id" });
+    }
+
     res.status(500).send("Server Error!");
   }
 };
@@ -107,6 +129,11 @@ exports.deleteTour = async (req, res) => {
   const id = req.params.id;
 
   try {
+    let tour = await Tour.findById(id);
+    if (!tour) {
+      return res.status(404).json({ msg: "Tour not found with that ID" });
+    }
+
     await Tour.findByIdAndDelete(id);
 
     return res.status(204).json({
@@ -115,6 +142,11 @@ exports.deleteTour = async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
+
+    if (error.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Invalid tour id" });
+    }
+
     res.status(500).send("Server Error!");
   }
 };

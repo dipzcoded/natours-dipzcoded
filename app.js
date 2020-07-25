@@ -22,6 +22,7 @@ app.use((req, res, next) => {
 // mouting routers
 app.use("/api/v1/tours", require(`${__dirname}/route/api/tours`));
 app.use("/api/v1/users", require(`${__dirname}/route/api/users`));
+app.use("/api/v1/auth", require(`${__dirname}/route/api/auth.js`));
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Route not found ${req.originalUrl}`, 404));
