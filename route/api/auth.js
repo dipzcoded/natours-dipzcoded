@@ -4,15 +4,23 @@ const router = express.Router();
 const {
   loginValidation,
   signUpValidation,
-  comparePassword,
+  comparePasswordandRoles,
+  authRouting,
 } = require("../../middlewares/authMiddleware");
 
 // Handlers
-const { logIn } = require("../../controllers/authController");
-const { signUp } = require("../../controllers/authController");
+const {
+  logIn,
+  signUp,
+  getLoginUser,
+} = require("../../controllers/authController");
 
 // Routing
+router.route("/user").get(authRouting, getLoginUser);
+
 router.route("/login").post(loginValidation, logIn);
-router.route("/signup").post([signUpValidation, comparePassword], signUp);
+router
+  .route("/signup")
+  .post([signUpValidation, comparePasswordandRoles], signUp);
 
 module.exports = router;

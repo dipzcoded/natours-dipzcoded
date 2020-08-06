@@ -19,7 +19,10 @@ const {
 } = require("./../../middlewares/tourMiddleware");
 
 // auth middleware
-const { authRouting } = require("../../middlewares/authMiddleware");
+const {
+  authRouting,
+  restrictRouting,
+} = require("../../middlewares/authMiddleware");
 
 // get top cheap tours
 router.route("/top-5-cheap").get(aliasTopTours, getAllTours);
@@ -37,6 +40,6 @@ router
   .route("/:id")
   .get(getTour)
   .patch(validateUpdateField, updateTour)
-  .delete(deleteTour);
+  .delete(authRouting, restrictRouting("admin", "lead-guide"), deleteTour);
 
 module.exports = router;

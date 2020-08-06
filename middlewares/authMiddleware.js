@@ -9,9 +9,33 @@ exports.signUpValidation = [
   check("confirmPassword", "Confirm your password").exists(),
 ];
 
-exports.comparePassword = (req, res, next) => {
+exports.comparePasswordandRoles = (req, res, next) => {
   if (req.body.password !== req.body.confirmPassword) {
     return res.status(400).json({ errors: [{ msg: "password didnt match" }] });
+  } else if (
+    req.body.password.length < 8 &&
+    req.body.confirmPassword.length < 8
+  ) {
+    return res
+      .status(400)
+      .json({ errors: [{ msg: "password must be 8 characters long" }] });
+  }
+
+  if (req.body.role) {
+    if (
+      req.body.role !== "guide" &&
+      req.body.role !== "lead-guide" &&
+      req.body.role !== "admin"
+    ) {
+      return res.status(400).json({
+        errors: [
+          {
+            msg:
+              "please input a role as user or a guide or a leadguide or an admin",
+          },
+        ],
+      });
+    }
   }
 
   next();
@@ -50,11 +74,9 @@ exports.authRouting = async (req, res, next) => {
 
     // check if the user changed his/her password
     if (freshUser.changePasswordAfter(decoded.iat)) {
-      return res
-        .status(401)
-        .json({
-          msg: "you recently changed your password! please log in again!",
-        });
+      return res.status(401).json({
+        msg: "you recently changed your password! please log in again!",
+      });
     }
 
     //  Grant user access to protected route
@@ -70,4 +92,17 @@ exports.authRouting = async (req, res, next) => {
     }
     res.status(500).send("Server Error!");
   }
+};
+
+exports.restrictRouting = (...roles) => {
+  return (req, res, next) => {
+    // roles ['admin','lead-guide']
+    if (!roles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({ msg: "You do not have permission to perform this action" });
+    }
+
+    next();
+  };
 };
