@@ -10,15 +10,16 @@ const {
 
 // Handlers
 const {
-  logIn,
   signUp,
   getLoginUser,
+  logIn,
 } = require("../../controllers/authController");
 
 // Routing
 router.route("/user").get(authRouting, getLoginUser);
 
 router.route("/login").post(loginValidation, logIn);
+// router.route("/login").post(loginValidation, logIne);
 router
   .route("/signup")
   .post([signUpValidation, comparePasswordandRoles], signUp);

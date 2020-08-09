@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const Tour = require("../model/Tour");
 const APIFeatures = require("../utils/apiFeatures");
+const User = require("../model/User");
 exports.getAllTours = async (req, res) => {
   try {
     // Execute query
@@ -40,7 +41,7 @@ exports.getTour = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const tourData = await Tour.findById(id);
+    const tourData = await Tour.findById(id).populate("reviews");
 
     if (!tourData) {
       return res.status(404).json({ msg: "Tour not found with that ID" });

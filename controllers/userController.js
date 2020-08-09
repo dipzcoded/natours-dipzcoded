@@ -81,7 +81,7 @@ exports.updateMe = async (req, res) => {
 
 exports.deleteMe = async (req, res) => {
   try {
-    await User.findByIdAndUpdate(req.user.id, { active: false });
+    await User.findByIdAndUpdate(req.user.id, { $set: { active: false } });
 
     res.status(204).json({ msg: "User deleted" });
   } catch (error) {

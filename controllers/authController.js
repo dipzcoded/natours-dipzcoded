@@ -37,7 +37,7 @@ const initJwtToken = (userid, res) => {
 exports.getLoginUser = async (req, res) => {
   const user = await User.findById(req.user.id);
 
-  res.json(user);
+  res.json({ user });
 };
 
 exports.signUp = async (req, res) => {

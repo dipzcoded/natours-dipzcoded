@@ -13,9 +13,8 @@ const Tour = require("../../model/Tour");
 connectDB();
 
 // read json file
-const data = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, "utf-8")
-).tours;
+const data = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, "utf-8"))
+  .tours;
 
 // import data into database
 const importData = async () => {

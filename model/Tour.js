@@ -81,6 +81,29 @@ const TourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      // GeoJSON
+      type: {
+        type: String,
+        default: "Point",
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: "Point",
+        },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     toJSON: { virtuals: true },
@@ -88,10 +111,27 @@ const TourSchema = new mongoose.Schema(
   }
 );
 
+// Virtual Populate
+// This allows us to do child referencing on the background
+TourSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "tour",
+  localField: "_id",
+});
+
 // creating a virtual property
 TourSchema.virtual("durationWeeks").get(function () {
   return this.duration / 7;
 });
+
+// Embedding documents
+// TourSchema.pre('save', async function(next){
+
+//  const guidesPromises = this.guides.map(async id => await User.findById(id))
+//  this.guides = await Promise.all(guidesPromises);
+//   next();
+
+// })
 
 // Document Middleware : runs before save() and create()
 TourSchema.pre("save", function (next) {
@@ -101,6 +141,12 @@ TourSchema.pre("save", function (next) {
 });
 
 // Query Middleware
+TourSchema.pre(/^find/, function (next) {
+  this.populate("guides", ["-__v", "-passwordChangedAt"]);
+
+  next();
+});
+
 TourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
   this.start = Date.now();

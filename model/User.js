@@ -1,6 +1,5 @@
 const crypto = require("crypto");
 const mongoose = require("mongoose");
-const { updatePassword } = require("../controllers/authController");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -81,4 +80,4 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken;
 };
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);

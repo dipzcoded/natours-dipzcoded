@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const reviewRouter = require("./reviews");
 const {
   getAllTours,
   createTour,
@@ -23,6 +24,12 @@ const {
   authRouting,
   restrictRouting,
 } = require("../../middlewares/authMiddleware");
+
+// review middleware
+const { checkRating } = require("../../middlewares/reviewMiddleware");
+
+// Post /tour/tourid/review
+router.use("/:tourId/reviews", reviewRouter);
 
 // get top cheap tours
 router.route("/top-5-cheap").get(aliasTopTours, getAllTours);
