@@ -30,8 +30,7 @@ exports.comparePasswordandRoles = (req, res, next) => {
       return res.status(400).json({
         errors: [
           {
-            msg:
-              "please input a role as user or a guide or a leadguide or an admin",
+            msg: "please input a role as user or a guide or a leadguide",
           },
         ],
       });
@@ -58,7 +57,9 @@ exports.authRouting = async (req, res, next) => {
   }
 
   if (!token) {
-    return res.status(401).json({ msg: "Authorization is invalid!" });
+    return res
+      .status(401)
+      .json({ errors: [{ msg: "Authorization is invalid!" }] });
   }
   try {
     // verifying token
@@ -69,13 +70,21 @@ exports.authRouting = async (req, res, next) => {
     if (!freshUser) {
       return res
         .status(401)
-        .json({ msg: "The user belonging to the token no longer exists. " });
+        .json({
+          errors: [
+            { msg: "The user belonging to the token no longer exists. " },
+          ],
+        });
     }
 
     // check if the user changed his/her password
     if (freshUser.changePasswordAfter(decoded.iat)) {
       return res.status(401).json({
-        msg: "you recently changed your password! please log in again!",
+        errors: [
+          {
+            msg: "you recently changed your password! please log in again!",
+          },
+        ],
       });
     }
 
@@ -88,7 +97,9 @@ exports.authRouting = async (req, res, next) => {
       error.name === "JsonWebTokenError" ||
       error.name === "TokenExpiredError"
     ) {
-      return res.status(401).json({ msg: "Authorization is invalid!" });
+      return res
+        .status(401)
+        .json({ errors: [{ msg: "Authorization is invalid!" }] });
     }
     res.status(500).send("Server Error!");
   }
@@ -100,7 +111,11 @@ exports.restrictRouting = (...roles) => {
     if (!roles.includes(req.user.role)) {
       return res
         .status(403)
-        .json({ msg: "You do not have permission to perform this action" });
+        .json({
+          errors: [
+            { msg: "You do not have permission to perform this action" },
+          ],
+        });
     }
 
     next();

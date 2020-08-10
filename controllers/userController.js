@@ -1,4 +1,5 @@
 const User = require("../model/User");
+const { deleteOne, updateOne, getOne, getAllOne } = require("./factoryHandler");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -9,43 +10,21 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json({ users });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server Error!");
-  }
-};
+exports.getAllUsers = getAllOne(User);
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "this route not yet defined",
-  });
-};
+exports.getUser = getOne(User);
 
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: "error",
-    message: "this route not yet defined",
+    message: "this route will not be defined/ so please use the signup instead",
   });
 };
 
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "this route not yet defined",
-  });
-};
+// you cant update your password with in this route
+exports.updateUser = updateOne(User);
 
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "this route not yet defined",
-  });
-};
+exports.deleteUser = deleteOne(User);
 
 exports.updateMe = async (req, res) => {
   // 1) create error if user Post password data

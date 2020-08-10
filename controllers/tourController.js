@@ -1,157 +1,25 @@
-const { validationResult } = require("express-validator");
 const Tour = require("../model/Tour");
-const APIFeatures = require("../utils/apiFeatures");
-const User = require("../model/User");
-exports.getAllTours = async (req, res) => {
-  try {
-    // Execute query
-    const features = new APIFeatures(Tour.find(), req.query)
-      .filter()
-      .sorting()
-      .limitFields()
-      .pagination();
 
-    if (req.query.page) {
-      const skipVal = (req.query.page - 1) * req.query.limit * 1;
-      const countTot = await Tour.countDocuments();
-      console.log(countTot);
-      console.log(skipVal);
-      if (skipVal >= countTot - 1) {
-        return res.status(404).json({ errors: [{ msg: "Page not found" }] });
-      }
-    }
+const {
+  getOne,
+  deleteOne,
+  updateOne,
+  createOne,
+  getAllOne,
+} = require("./factoryHandler");
 
-    const toursData = await features.query;
+// get all reviews
+exports.getAllTours = getAllOne(Tour, "Tour");
+// Get Tour
+exports.getTour = getOne(Tour, "Reviews");
+// Create Tour
+exports.createTour = createOne(Tour);
+// update Tour
+exports.updateTour = updateOne(Tour);
+// delete Tour
+exports.deleteTour = deleteOne(Tour);
 
-    return res.status(200).json({
-      status: "success",
-      requestedAt: req.requestTime,
-      result: toursData.length,
-      data: {
-        toursData,
-      },
-    });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server Error");
-  }
-};
-
-exports.getTour = async (req, res) => {
-  const id = req.params.id;
-
-  try {
-    const tourData = await Tour.findById(id).populate("reviews");
-
-    if (!tourData) {
-      return res.status(404).json({ msg: "Tour not found with that ID" });
-    }
-
-    return res.status(200).json({
-      status: "success",
-      data: {
-        tourData,
-      },
-    });
-  } catch (error) {
-    console.error(error.message);
-
-    if (error.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Invalid tour id" });
-    }
-
-    res.status(500).send("Server Error!");
-  }
-};
-
-exports.createTour = async (req, res) => {
-  // validating my required fields
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  try {
-    // checking if a tour already exist with the name
-    let newTour = await Tour.findOne({ name: req.body.name });
-
-    if (newTour) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Tour already exists with the name" }] });
-    }
-
-    // saving a tour instance to the database
-    newTour = await Tour.create(req.body);
-    // newTour = await Tour.create(req.body);
-
-    res.status(201).json({
-      status: "success",
-      data: {
-        tour: newTour,
-      },
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
-  }
-};
-
-exports.updateTour = async (req, res) => {
-  const id = req.params.id;
-
-  try {
-    let tour = await Tour.findById(id);
-
-    if (!tour) {
-      return res.status(404).json({ msg: "Tour not found with that ID" });
-    }
-
-    tour = await Tour.findByIdAndUpdate(id, { $set: req.body }, { new: true });
-
-    res.status(200).json({
-      status: "success",
-      data: {
-        tourData: tour,
-      },
-    });
-  } catch (error) {
-    console.error(error.message);
-
-    if (error.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Invalid tour id" });
-    }
-
-    res.status(500).send("Server Error!");
-  }
-};
-
-exports.deleteTour = async (req, res) => {
-  const id = req.params.id;
-
-  try {
-    let tour = await Tour.findById(id);
-    if (!tour) {
-      return res.status(404).json({ msg: "Tour not found with that ID" });
-    }
-
-    await Tour.findByIdAndDelete(id);
-
-    return res.status(204).json({
-      status: "success",
-      message: "delete successful",
-    });
-  } catch (error) {
-    console.error(error.message);
-
-    if (error.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Invalid tour id" });
-    }
-
-    res.status(500).send("Server Error!");
-  }
-};
-
+// get tour stats
 exports.getTourStats = async (req, res) => {
   try {
     const stats = await Tour.aggregate([
@@ -190,6 +58,7 @@ exports.getTourStats = async (req, res) => {
   }
 };
 
+// get tour monthly plan
 exports.getMonthlyPlan = async (req, res) => {
   try {
     const year = parseInt(req.params.year);
