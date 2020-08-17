@@ -5,6 +5,7 @@ const router = express.Router();
 const {
   authRouting,
   comparePasswordandRoles,
+  restrictRouting,
 } = require("../../middlewares/authMiddleware");
 
 const {
@@ -27,17 +28,24 @@ const {
   resetPassword,
   updatePassword,
 } = require("../../controllers/authController");
+const { route } = require("./auth");
 
 // Routing
 router.route("/forgotPassword").post(forgotPassword);
 router
   .route("/resetPassword/:token")
   .patch(comparePasswordandRoles, resetPassword);
+
+// protecting the route that comes after this middleware
+router.use(authRouting);
 router
   .route("/updateMyPassword")
-  .patch(authRouting, updatePasswordValidation, updatePassword);
-router.route("/updateMe").patch(authRouting, updateMe);
-router.route("/deleteMe").delete(authRouting, deleteMe);
+  .patch(updatePasswordValidation, updatePassword);
+router.route("/updateMe").patch(updateMe);
+router.route("/deleteMe").delete(deleteMe);
+
+// restricting the route to only admins  only
+router.use(restrictRouting("admin"));
 router.route("/").get(getAllUsers).post(createUser);
 router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 

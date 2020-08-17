@@ -32,6 +32,7 @@ const TourSchema = new mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      set: (val) => Math.round(val * 10) / 10, //4.66666 * 10 = 46.66666 = 47/10 = 4.7
     },
 
     ratingsQuantity: {
@@ -110,6 +111,10 @@ const TourSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+// indexing specific field to improve performance
+TourSchema.index({ price: 1, ratingsAverage: -1 });
+TourSchema.index({ slug: 1 });
 
 // Virtual Populate
 // This allows us to do child referencing on the background

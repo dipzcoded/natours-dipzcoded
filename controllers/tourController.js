@@ -11,8 +11,9 @@ const {
 // get all reviews
 exports.getAllTours = getAllOne(Tour, "Tour");
 // Get Tour
-exports.getTour = getOne(Tour, "Reviews");
-// Create Tour
+exports.getTour = getOne(Tour, "reviews");
+
+// // Create Tour
 exports.createTour = createOne(Tour);
 // update Tour
 exports.updateTour = updateOne(Tour);

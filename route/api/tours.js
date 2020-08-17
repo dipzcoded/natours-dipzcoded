@@ -25,9 +25,6 @@ const {
   restrictRouting,
 } = require("../../middlewares/authMiddleware");
 
-// review middleware
-const { checkRating } = require("../../middlewares/reviewMiddleware");
-
 // Post /tour/tourid/review
 router.use("/:tourId/reviews", reviewRouter);
 
@@ -36,17 +33,36 @@ router.route("/top-5-cheap").get(aliasTopTours, getAllTours);
 
 // Tour statistics
 router.route("/tour-stats").get(getTourStats);
-router.route("/monthly-plan/:year").get(getMonthlyPlan);
+router
+  .route("/monthly-plan/:year")
+  .get(
+    authRouting,
+    restrictRouting("admin", "lead-guide", "guide"),
+    getMonthlyPlan
+  );
 
 // getting all tours and creating tours
 router
   .route("/")
-  .get(authRouting, getAllTours)
-  .post([validateFields, checkValidators], createTour);
+  .get(getAllTours)
+  .post(
+    [
+      authRouting,
+      restrictRouting("admin", "lead-guide"),
+      validateFields,
+      checkValidators,
+    ],
+    createTour
+  );
 router
   .route("/:id")
-  .get(getTour)
-  .patch(validateUpdateField, updateTour)
+  .get(authRouting, restrictRouting("admin", "lead-guide", "user"), getTour)
+  .patch(
+    authRouting,
+    restrictRouting("admin", "lead-guide"),
+    validateUpdateField,
+    updateTour
+  )
   .delete(authRouting, restrictRouting("admin", "lead-guide"), deleteTour);
 
 module.exports = router;

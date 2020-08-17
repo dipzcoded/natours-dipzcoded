@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Tour = require("../model/Tour");
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -34,10 +35,59 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+// prevent users from making two reveals on the same tour by indexing
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 // query middleware
 reviewSchema.pre(/^find/, function (next) {
-  this.populate({ path: "user", select: "name" });
+  this.populate({ path: "user", select: "name photo" });
 
+  next();
+});
+
+// Creating static method
+reviewSchema.statics.calcAverageRating = async function (tourId) {
+  // console.log(tourId);
+  const stats = await this.aggregate([
+    {
+      $match: { tour: tourId },
+    },
+    {
+      $group: {
+        _id: "$tour",
+        nRating: { $sum: 1 },
+        avgRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+  console.log(stats);
+  if (stats.length > 0) {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsQuantity: stats[0].nRating,
+      ratingsAverage: stats[0].avgRating,
+    });
+  } else {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingsQuantity: 0,
+      ratingsAverage: 4.5,
+    });
+  }
+};
+
+reviewSchema.post("save", function (docs, next) {
+  this.constructor.calcAverageRating(this.tour);
+  next();
+});
+
+// FindByIdAndUpdate
+// FindByIdAndDelete
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  this.r = await this.findOne();
+  next();
+});
+
+reviewSchema.post(/^findOneAnd/, async function (docs, next) {
+  await this.r.constructor.calcAverageRating(this.r.tour);
   next();
 });
 

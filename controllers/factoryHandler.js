@@ -1,8 +1,9 @@
 const { validationResult } = require("express-validator");
 const APIFeatures = require("../utils/apiFeatures");
+const ApiError = require("../utils/apiError");
 
 exports.getAllOne = (Model, type) => {
-  return async (req, res) => {
+  return async (req, res, next) => {
     try {
       let filter = {};
       if (req.params.tourId) filter = { tour: req.params.tourId };
@@ -31,10 +32,11 @@ exports.getAllOne = (Model, type) => {
         }
 
         if (skipVal >= countTot) {
-          return res.status(404).json({ errors: [{ msg: "Page not found" }] });
+          next(new ApiError("page not found", 404));
         }
       }
 
+      // const doc = await features.query.explain();
       const doc = await features.query;
 
       return res.status(200).json({
@@ -53,11 +55,11 @@ exports.getAllOne = (Model, type) => {
 };
 
 exports.getOne = (Model, popOptions) => {
-  return async (req, res) => {
+  return async (req, res, next) => {
     const id = req.params.id;
 
     try {
-      let query = await Model.findById(id);
+      let query = Model.findById(id);
       if (popOptions) {
         query = query.populate(popOptions);
       }
@@ -65,7 +67,7 @@ exports.getOne = (Model, popOptions) => {
       const doc = await query;
 
       if (!doc) {
-        return res.status(404).json({ msg: "no document found with that ID" });
+        next(new ApiError("no document found with that ID", 404));
       }
 
       return res.status(200).json({
@@ -78,7 +80,7 @@ exports.getOne = (Model, popOptions) => {
       console.error(error.message);
 
       if (error.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Invalid tour id" });
+        next(new ApiError("Invalid tour id", 404));
       }
 
       res.status(500).send("Server Error!");
@@ -87,13 +89,13 @@ exports.getOne = (Model, popOptions) => {
 };
 
 exports.deleteOne = (Model) => {
-  return async (req, res) => {
+  return async (req, res, next) => {
     const id = req.params.id;
 
     try {
       let doc = await Model.findById(id);
       if (!doc) {
-        return res.status(404).json({ msg: "no document found with that ID" });
+        next(new ApiError("no document found with that ID", 404));
       }
 
       await Model.findByIdAndDelete(id);
@@ -106,7 +108,7 @@ exports.deleteOne = (Model) => {
       console.error(error.message);
 
       if (error.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Invalid tour id" });
+        next(new ApiError("Invalid tour id", 404));
       }
 
       res.status(500).send("Server Error!");
@@ -115,14 +117,14 @@ exports.deleteOne = (Model) => {
 };
 
 exports.updateOne = (Model) => {
-  return async (req, res) => {
+  return async (req, res, next) => {
     const id = req.params.id;
 
     try {
       let doc = await Model.findById(id);
 
       if (!doc) {
-        return res.status(404).json({ msg: "no document found with that ID" });
+        next(new ApiError("no document found with that ID", 404));
       }
 
       doc = await Model.findByIdAndUpdate(
@@ -141,7 +143,7 @@ exports.updateOne = (Model) => {
       console.error(error.message);
 
       if (error.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Invalid tour id" });
+        next(new ApiError("Invalid tour id", 404));
       }
 
       res.status(500).send("Server Error!");
@@ -150,7 +152,7 @@ exports.updateOne = (Model) => {
 };
 
 exports.createOne = (Model) => {
-  return async (req, res) => {
+  return async (req, res, next) => {
     // validating my required fields
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -167,12 +169,25 @@ exports.createOne = (Model) => {
         },
       });
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+
+      if (
+        error.message.includes(
+          "E11000 duplicate key error collection: natours.tours index: name_1 dup key"
+        )
+      ) {
+        next(new ApiError("tour already been created", 400));
+      }
+
+      if (
+        error.message ===
+        "E11000 duplicate key error collection: natours.reviews index: tour_1_user_1 dup key: { tour: ObjectId('5f38a78a1f68e51ae031bc99'), user: ObjectId('5c8a1dfa2f8fb814b56fa181') }"
+      ) {
+        next(new ApiError("review already been created", 400));
+      }
 
       if (error.name === "MongoError") {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Tour already exists with the name" }] });
+        next(new ApiError("Document exists", 400));
       }
 
       res.status(500).send("Server Error");

@@ -16,12 +16,15 @@ const {
 } = require("../../controllers/authController");
 
 // Routing
-router.route("/user").get(authRouting, getLoginUser);
 
 router.route("/login").post(loginValidation, logIn);
 // router.route("/login").post(loginValidation, logIne);
 router
   .route("/signup")
   .post([signUpValidation, comparePasswordandRoles], signUp);
+
+// protecting the route that comes after this middleware
+router.use(authRouting);
+router.route("/user").get(getLoginUser);
 
 module.exports = router;

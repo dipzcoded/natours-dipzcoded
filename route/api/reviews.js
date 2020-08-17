@@ -21,13 +21,15 @@ const {
   checkUserAndTourIds,
 } = require("../../middlewares/reviewMiddleware");
 
+//  protecting the route that comes after this middleware
+router.use(authRouting);
+
 // Routing
-router.route("/").get(getTourReviews);
 router
-  .route("/:tourId")
+  .route("/")
+  .get(getTourReviews)
   .post(
     [
-      authRouting,
       restrictRouting("user"),
       checkUserAndTourIds,
       checkRating,
@@ -38,7 +40,24 @@ router
     ],
     createReviews
   );
+router
+  .route("/:tourId")
+  .post(
+    [
+      restrictRouting("user"),
+      checkRating,
+      [
+        check("review", "A review is required").not().isEmpty(),
+        check("rating", "A rating is required").exists(),
+      ],
+    ],
+    createReviews
+  );
 
-router.route("/:id").get(getReview).patch(updateReviews).delete(deleteReviews);
+router
+  .route("/:id")
+  .get(getReview)
+  .patch(restrictRouting("user", "admin"), updateReviews)
+  .delete(restrictRouting("user", "admin"), deleteReviews);
 
 module.exports = router;

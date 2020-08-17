@@ -9,17 +9,26 @@ dotevn.config({ path: "./config.env" });
 // Developers modules
 const connectDB = require("../../database/config");
 const Tour = require("../../model/Tour");
+const Review = require("../../model/Review");
+const User = require("../../model/User");
 // connection to MongoDB
 connectDB();
 
 // read json file
-const data = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, "utf-8"))
+const tourData = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, "utf-8"))
   .tours;
+const reviewData = JSON.parse(
+  fs.readFileSync(`${__dirname}/reviews.json`, "utf-8")
+).reviews;
+const userData = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, "utf-8"))
+  .users;
 
 // import data into database
 const importData = async () => {
   try {
-    await Tour.create(data);
+    await Tour.create(tourData);
+    await User.create(userData);
+    await Review.create(reviewData);
     console.log("Data Successfully loaded");
   } catch (error) {
     console.error(error.message);
@@ -31,6 +40,8 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Tour.deleteMany();
+    await User.deleteMany();
+    await Review.deleteMany();
     console.log("Data Successfully deleted");
   } catch (error) {
     console.error(error.message);
