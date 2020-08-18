@@ -1,4 +1,5 @@
 const Tour = require("../model/Tour");
+const ApiError = require("../utils/apiError");
 
 const {
   getOne,
@@ -111,4 +112,74 @@ exports.getMonthlyPlan = async (req, res) => {
     console.log(error.message);
     res.status(500).send("Server Error!!");
   }
+};
+
+// tours-within/:distance/center/:latlng/unit/:unit
+// 33.996032, -118.415437
+exports.getToursWithin = async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(",");
+  if (!lat && !lng) {
+    next(
+      new ApiError(
+        "Please provide Latitude and Longitude in the format lat,lng.",
+        400
+      )
+    );
+  }
+
+  // trying to get the radian of the distance by dividing it by the Earth Radius
+  const radius = unit === "mi" ? distance / 3963.2 : distance / 6378.1;
+
+  const docs = await Tour.find({
+    startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+  });
+
+  res.status(200).json({
+    status: "success",
+    result: docs.length,
+    data: {
+      docs,
+    },
+  });
+};
+
+exports.getDistances = async (req, res, next) => {
+  const { latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(",");
+  const multiplier = unit === "mi" ? 0.000621371 : 0.001;
+  if (!lat && !lng) {
+    next(
+      new ApiError(
+        "Please provide Latitude and Longitude in the format lat,lng.",
+        400
+      )
+    );
+  }
+
+  const distances = await Tour.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: "Point",
+          coordinates: [lng * 1, lat * 1],
+        },
+        distanceField: "distance",
+        distanceMultiplier: multiplier,
+      },
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1,
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      docs: distances,
+    },
+  });
 };

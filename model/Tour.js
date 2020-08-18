@@ -115,7 +115,7 @@ const TourSchema = new mongoose.Schema(
 // indexing specific field to improve performance
 TourSchema.index({ price: 1, ratingsAverage: -1 });
 TourSchema.index({ slug: 1 });
-
+TourSchema.index({ startLocation: "2dsphere" });
 // Virtual Populate
 // This allows us to do child referencing on the background
 TourSchema.virtual("reviews", {
@@ -130,13 +130,11 @@ TourSchema.virtual("durationWeeks").get(function () {
 });
 
 // Embedding documents
-// TourSchema.pre('save', async function(next){
-
-//  const guidesPromises = this.guides.map(async id => await User.findById(id))
-//  this.guides = await Promise.all(guidesPromises);
-//   next();
-
-// })
+TourSchema.pre("save", async function (next) {
+  const guidesPromises = this.guides.map(async (id) => await User.findById(id));
+  this.guides = await Promise.all(guidesPromises);
+  next();
+});
 
 // Document Middleware : runs before save() and create()
 TourSchema.pre("save", function (next) {
@@ -165,15 +163,10 @@ TourSchema.post(/^find/, function (docs, next) {
 });
 
 // Aggregation Middleware
-TourSchema.pre("aggregate", function (next) {
-  console.log(this.pipeline());
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+// TourSchema.pre("aggregate", function (next) {
+//   console.log(this.pipeline());
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
 
-  next();
-});
-
-// TourSchema.post("save", function (docs, next) {
-//   console.log(docs);
 //   next();
 // });
 

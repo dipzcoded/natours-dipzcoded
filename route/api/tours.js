@@ -9,6 +9,8 @@ const {
   deleteTour,
   getTourStats,
   getMonthlyPlan,
+  getToursWithin,
+  getDistances,
 } = require("../../controllers/tourController");
 
 // tour  custom middlewares
@@ -40,6 +42,13 @@ router
     restrictRouting("admin", "lead-guide", "guide"),
     getMonthlyPlan
   );
+
+// Geospatial
+router
+  .route("/tours-within/:distance/center/:latlng/unit/:unit")
+  .get(getToursWithin);
+
+router.route("/distances/:latlng/unit/:unit").get(getDistances);
 
 // getting all tours and creating tours
 router
