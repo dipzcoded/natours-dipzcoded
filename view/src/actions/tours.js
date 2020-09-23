@@ -9,10 +9,11 @@ import {
 // get all tours
 export const getAllTours = () => async dispatch => {
     try {
-        const res  = await axios.get('/api/v1/tours').data;
+        const res  = await axios.get('/api/v1/tours');
         dispatch({type : GET_TOURS, payload:res.data})
-    } catch (error) {
-        const errors = errors.response.data.errors;
+    } catch (err) {
+        const errors = err.response.data.errors;
+        console.log(errors)
         dispatch({
             type : TOUR_ERROR
         })
