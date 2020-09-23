@@ -45,6 +45,7 @@ router
   .post(
     [
       restrictRouting("user"),
+      checkUserAndTourIds,
       checkRating,
       [
         check("review", "A review is required").not().isEmpty(),

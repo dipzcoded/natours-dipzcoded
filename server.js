@@ -6,7 +6,6 @@ dotenv.config({ path: "./config.env" });
 // developers modules
 const connectDB = require("./database/config");
 const app = require("./app");
-const Tour = require("./model/Tour");
 
 // connection mongoDB with my express framework
 connectDB();

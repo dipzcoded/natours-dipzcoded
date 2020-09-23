@@ -6,6 +6,7 @@ const { validationResult } = require("express-validator");
 const sendEmail = require("../utils/email");
 
 const initJwtToken = (userid, res) => {
+  // creating a payload
   const payload = {
     user: {
       id: userid,

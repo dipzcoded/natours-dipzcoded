@@ -10,7 +10,7 @@ const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
 // setting up middleware
 
-// set Security HTPP Headers
+// set Security HTTP Headers
 app.use(helmet());
 
 if (process.env.NODE_ENV === "development") {

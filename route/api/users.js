@@ -28,7 +28,7 @@ const {
   resetPassword,
   updatePassword,
 } = require("../../controllers/authController");
-const { route } = require("./auth");
+// const { route } = require("./auth");
 
 // Routing
 router.route("/forgotPassword").post(forgotPassword);
