@@ -1,41 +1,19 @@
 import React from 'react'
 import icons from '../../img/icons.svg'
 import {Link} from 'react-router-dom'
+import {formatDate} from '../../Helper';
 
 const ToursItem = ({tour}) => {
 
 
-   const dates = tour.startDates[0].split('-')
-    // formating the data
-    const formatDate = (datesting) =>
-    {
-        const dateFormat = datesting;
-            switch(dateFormat)
-            {
-                case "01" : return "January"
-                case "02" : return "February"
-                case "03" : return  "March"
-                case "04" : return  "April"
-                case "05" : return  "May"
-                case "06" : return  "June"
-                case "07" : return  "July"
-                case "08" : return  "August"
-                case "09" : return  "September"
-                case "10" : return  "October"
-                case "11" : return  "November"
-                case "12" : return  "December"
-                default : return "....."
-            }
-    }
-
-    
+   const dates = tour.startDates[0].split('-')   
     return (
         <div className="card">
             {/* card-header */}
             <div className="card__header">
                 <div className="card__picture">
                    <div className="card__picture-overlay">&nbsp;</div> 
-                   <img src={`img/tours/${tour.imageCover}`} alt={tour.name} className="card__picture-img" />
+                   <img src={`/img/tours/${tour.imageCover}`} alt={tour.name} className="card__picture-img" />
                 </div>
 
                 <h3 className="heading-tertirary"> <span>{tour.name}</span>
@@ -84,7 +62,7 @@ const ToursItem = ({tour}) => {
     <span className="card__footer-value">{tour.ratingsAverage} </span>
     <span className="card__footer-text">rating ({tour.ratingsQuantity})</span>
                 </p>
-                <Link to={`/tours/${tour.slug}`} className="btn btn--green btn--small">Details</Link>
+                <Link to={`/tours/${tour.slug}/${tour._id}`} className="btn btn--green btn--small">Details</Link>
             </div>
         </div>
     )

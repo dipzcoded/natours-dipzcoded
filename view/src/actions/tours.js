@@ -20,3 +20,21 @@ export const getAllTours = () => async dispatch => {
     }
 
 }
+
+
+export const getTour = (id) => async dispatch => {
+
+    try {
+
+        const res = await axios.get(`/api/v1/tours/${id}`);
+      dispatch({type : GET_TOUR, payload:res.data})
+        
+    } catch (err) {
+        const errors = err.response.data.errors;
+        console.log(errors);
+        dispatch({
+            type : TOUR_ERROR
+        })
+    }
+
+}

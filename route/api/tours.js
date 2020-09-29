@@ -63,9 +63,13 @@ router
     ],
     createTour
   );
+
+  // restrictRouting("admin", "lead-guide", "user")
+
+
 router
   .route("/:id")
-  .get(authRouting, restrictRouting("admin", "lead-guide", "user"), getTour)
+  .get(getTour)
   .patch(
     authRouting,
     restrictRouting("admin", "lead-guide"),
