@@ -3,6 +3,7 @@ import icons from '../../img/icons.svg'
 import {formatDate} from '../../Helper';
 import TourReview from './TourReview';
 import TourBooking from './TourBooking'
+import TourMap from './TourMap';
 
 const TourView = ({tour}) => {
 
@@ -115,6 +116,9 @@ const TourView = ({tour}) => {
             {tourImages}
         </section>
         {/* section Map ? Component */}
+        {
+                <TourMap tour={tour} />
+            }
         <section className="section-reviews">
             <div className="reviews"> 
                 {

@@ -4,6 +4,11 @@ import App from './App';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import {Provider} from 'react-redux';
 import store from './store';
+import mapboxgl from 'mapbox-gl';
+
+// init access token
+mapboxgl.accessToken = "pk.eyJ1IjoiZGlwemNvZGVkIiwiYSI6ImNrZm44cW1rajA4YjEyc29lMGw0b3NvaXoifQ.Ra2YANwYtJvWUICVbUgaDA";
+     
 
 ReactDOM.render(
   <React.StrictMode>

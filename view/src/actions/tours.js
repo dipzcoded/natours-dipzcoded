@@ -8,6 +8,8 @@ import {
 
 // get all tours
 export const getAllTours = () => async dispatch => {
+
+
     try {
         const res  = await axios.get('/api/v1/tours');
         dispatch({type : GET_TOURS, payload:res.data})
@@ -23,7 +25,9 @@ export const getAllTours = () => async dispatch => {
 
 
 export const getTour = (id) => async dispatch => {
-
+    dispatch({
+        type : CLEAR_TOUR
+    })
     try {
 
         const res = await axios.get(`/api/v1/tours/${id}`);
@@ -38,3 +42,4 @@ export const getTour = (id) => async dispatch => {
     }
 
 }
+

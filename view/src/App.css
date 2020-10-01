@@ -544,7 +544,7 @@ body {
   margin-top: calc(0px - var(--section-rotate));
 }
 
-#map {
+.map {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -552,7 +552,7 @@ body {
 }
 
 .marker {
-  /* background-image: url('../img/pin.png'); */
+  background-image: url('/img/pin.png');
   background-size: cover;
   width: 32px;
   height: 40px;

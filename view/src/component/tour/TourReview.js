@@ -5,6 +5,7 @@ const TourReview = ({review}) => {
 
     const ratinglength = Array.from({length : review.rating});
     console.log(ratinglength)
+    const reviewInActive = Array.from({length : 5 - ratinglength.length });
 
     return (
         <div className="reviews__card">
@@ -16,10 +17,19 @@ const TourReview = ({review}) => {
         <p className="reviews__text">
         {review.review}
         </p>
+        {/* review active */}
         <div className="reviews__rating">
         {
                 ratinglength.map((index) => (
                     <svg class="reviews__star reviews__star--active" key={index}>
+                    <use xlinkHref={`${icons}#icon-star`}></use>
+                  </svg>
+                ))
+            }
+            {/* review inactive */}
+            {
+                reviewInActive.length > 0 && reviewInActive.map(index => (
+                    <svg class="reviews__star reviews__star--inactive" key={index}>
                     <use xlinkHref={`${icons}#icon-star`}></use>
                   </svg>
                 ))

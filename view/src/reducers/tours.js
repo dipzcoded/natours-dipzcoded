@@ -38,6 +38,14 @@ export default function(state= initialState, action)
             showNavbar : false
         }
 
+        case CLEAR_TOUR : 
+        return {
+            ...state,
+            tour : null,
+            isLoading : false,
+            showNavbar : false
+        }
+
         case TOUR_ERROR : 
         return {
             ...state,
