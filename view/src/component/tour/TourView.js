@@ -104,7 +104,7 @@ const TourView = ({tour}) => {
 
         {/* overview description */}
         <div className="description-box">
-        <h2 className="heading-secondary ma-bt-lg">About the {tour.name}</h2>
+        <h2 className="heading-secondary ma-bt-lg">About {tour.name}</h2>
             <p className="description__text">
                 {tour.description}
             </p>
