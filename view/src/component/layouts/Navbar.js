@@ -30,8 +30,8 @@ const Navbar = ({tours : {showNavbar}}) => {
         <img src={LogoWhite} alt="Natours logo" />
       </div>
       <nav className="nav nav--user">
-         <button className="nav__el">Log in</button>
-        <button className="nav__el nav__el--cta">Sign up</button>
+         <Link to="/login" className="nav__el">Log in</Link>
+        <Link to="/register" className="nav__el nav__el--cta">Sign up</Link>
       </nav>
     </header>
     )
