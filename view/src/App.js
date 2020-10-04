@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Switch, Route} from 'react-router-dom';
 import './App.css';
 import Navbar from './component/layouts/Navbar';
@@ -7,10 +7,29 @@ import Tours from './component/overview/Tours';
 import Tour from './component/tour/Tour';
 import Login from './component/authenication/Login';
 import Register from './component/authenication/Register';
-import ALert from './component/layouts/Alert';
 import Alert from './component/layouts/Alert';
+import Cookies from 'js-cookie'
+import {loadUser} from './actions/auth';
+import store from './store';
+import sethAuthToken from './utlis/setAuthToken';
+
+const token = Cookies.get('jwt');
+if(token)
+{
+  sethAuthToken(token);
+}
+
 
 const App = () => {
+
+  useEffect(() => {
+
+      store.dispatch(loadUser());
+
+  },[])
+
+
+
   return (
     <div>
       <Navbar />
@@ -25,5 +44,7 @@ const App = () => {
     </div>
   );
 }
+
+
 
 export default App;

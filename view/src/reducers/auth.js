@@ -1,6 +1,8 @@
 import {
         REGISTER_SUCCESS,
-        REGISTER_FAIL
+        REGISTER_FAIL,
+        USER_LOADED,
+        AUTH_ERROR
 } from '../types'
 import Cookies from 'js-cookie';
 
@@ -20,7 +22,16 @@ export default function(state = initialState, action)
     switch(type)
     {
 
+        case USER_LOADED : 
+        return {
+            ...state,
+            isAuthenticated : true,
+            isLoading : false,
+            user : payload.user
+        }
+
         case REGISTER_SUCCESS : 
+        Cookies.set('jwt', payload.token,{expires : 90 })
         return{
             ...state,
             ...payload,
@@ -29,6 +40,7 @@ export default function(state = initialState, action)
         }
 
         case REGISTER_FAIL : 
+        case AUTH_ERROR :
         Cookies.remove('jwt');
         return {
             ...state,

@@ -5,4 +5,6 @@ export const CLEAR_TOUR = "CLEAR_TOUR";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const SET_ALERT = "SET_ALERT";
-export const CLEAR_ALERT = "CLEAR_ALERT"
+export const CLEAR_ALERT = "CLEAR_ALERT";
+export const USER_LOADED = "USER_LOADED";
+export const AUTH_ERROR = "AUTH_ERROR";

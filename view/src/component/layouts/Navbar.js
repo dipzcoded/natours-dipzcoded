@@ -9,7 +9,7 @@ const Navbar = ({tours : {showNavbar}}) => {
              <header className="header">
       <nav className="nav nav--tours">
         <Link to="/" className="nav__el">All tours</Link>
-        {
+        {/* {
           showNavbar === true && (
             <form className="nav__search">
           <button className="nav__search-btn">
@@ -24,7 +24,7 @@ const Navbar = ({tours : {showNavbar}}) => {
           />
         </form>
           )
-        }
+        } */}
       </nav>
       <div className="header__logo">
         <img src={LogoWhite} alt="Natours logo" />
