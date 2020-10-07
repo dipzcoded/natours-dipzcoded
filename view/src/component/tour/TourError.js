@@ -1,7 +1,7 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-const TourError = ({match, errDetails}) => {
+const TourError = () => {
 const history = useHistory();
     const routeChange = (e) => {
         let path = "/";
@@ -16,7 +16,7 @@ const history = useHistory();
     <h2 className="error__emoji">😢 🤯</h2>
             </div>
             <div className="error__msg">
-    {match ? <h4>{match.params.tourname.toUpperCase()} not found......</h4> : <h3>{errDetails}</h3> }
+    <h4>The link you followed may be broken, or the page may have been removed.</h4>
             </div>
             <button className="btn btn--green button-outline" onClick={routeChange}>Go Back</button>
            

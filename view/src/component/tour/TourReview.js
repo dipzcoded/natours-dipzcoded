@@ -4,7 +4,6 @@ import icons from '../../img/icons.svg';
 const TourReview = ({review}) => {
 
     const ratinglength = Array.from({length : review.rating});
-    console.log(ratinglength)
     const reviewInActive = Array.from({length : 5 - ratinglength.length });
 
     return (
@@ -21,7 +20,7 @@ const TourReview = ({review}) => {
         <div className="reviews__rating">
         {
                 ratinglength.map((index) => (
-                    <svg class="reviews__star reviews__star--active" key={index}>
+                    <svg className="reviews__star reviews__star--active" key={index}>
                     <use xlinkHref={`${icons}#icon-star`}></use>
                   </svg>
                 ))
@@ -29,7 +28,7 @@ const TourReview = ({review}) => {
             {/* review inactive */}
             {
                 reviewInActive.length > 0 && reviewInActive.map(index => (
-                    <svg class="reviews__star reviews__star--inactive" key={index}>
+                    <svg className="reviews__star reviews__star--inactive" key={index}>
                     <use xlinkHref={`${icons}#icon-star`}></use>
                   </svg>
                 ))

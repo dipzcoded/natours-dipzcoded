@@ -11,6 +11,7 @@ import {
 const initialState = {
     tours : [],
     tour : null,
+    error : null,
     isLoading : true,
 }
 
@@ -48,6 +49,7 @@ export default function(state= initialState, action)
             tours : [],
             tour : null,
             isLoading : false,
+            error : payload
         }
 
         default : 

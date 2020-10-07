@@ -40,8 +40,8 @@ const App = () => {
         <Route exact path="/" component={Tours} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
-        <Route exact path="/tours/:tourname/:tourid" component={Tour} />
-        <Route exact path="/:tourname/notfound" render={(rendProps) => <TourError {...rendProps} />} />
+        <Route exact path="/tours/:tourname/:tourid" render={(rendProps) => <Tour {...rendProps} />} />
+        <Route exact path="/tour/notfound" render={(rendProps) => <TourError {...rendProps} />} />
         <Route render={(renProps) => <TourError errDetails="Page Not Found" />} />
       </Switch>
       <Footer />

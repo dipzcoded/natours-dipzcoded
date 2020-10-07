@@ -3,6 +3,6 @@ module.exports = (err, req, res, next) => {
 
   res.status(err.statusCode).json({
     status: err.status,
-    errors: [{ msg: err.message }],
+    errors: [{ msg: err.message }]
   });
 };

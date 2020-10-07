@@ -1,4 +1,5 @@
 import axios from 'axios';
+import TourError from '../component/tour/TourError';
 import {
     GET_TOURS,
     GET_TOUR,
@@ -35,12 +36,19 @@ export const getTour = (id) => async dispatch => {
         
     } catch (err) {
         const errors = err.response.data.errors;
-        console.log(errors);
+        if(errors)
+        {
+            console.log(errors);
+        }
     
         dispatch({
             type : TOUR_ERROR,
-            payload : "Sorry Tour not found..."
+            payload : errors
         })
+
+        setTimeout(() => {
+                dispatch({type : TOUR_ERROR})
+        },5000)
     }
 
 }

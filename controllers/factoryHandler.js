@@ -67,7 +67,7 @@ exports.getOne = (Model, popOptions) => {
       const doc = await query;
 
       if (!doc) {
-        next(new ApiError("no document found with that ID", 404));
+      return  next(new ApiError("no document found with that ID", 404));
       }
 
       return res.status(200).json({
@@ -77,10 +77,11 @@ exports.getOne = (Model, popOptions) => {
         },
       });
     } catch (error) {
-      console.error(error.message);
+      // console.error(error.message);
+      console.log(error.kind)
 
       if (error.kind === "ObjectId") {
-        next(new ApiError("Invalid tour id", 404));
+      return next(new ApiError("Invalid tour id", 404));
       }
 
       res.status(500).send("Server Error!");
