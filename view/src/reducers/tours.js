@@ -12,7 +12,6 @@ const initialState = {
     tours : [],
     tour : null,
     isLoading : true,
-    showNavbar : true
 }
 
 
@@ -26,24 +25,21 @@ export default function(state= initialState, action)
         return {
             ...state,
             tours : payload.data.doc,
-            isLoading : false,
-            showNavbar : true
+            isLoading : false
         }
 
         case GET_TOUR : 
         return {
             ...state,
             tour: payload.data.doc,
-            isLoading : false,
-            showNavbar : false
+            isLoading : false
         }
 
         case CLEAR_TOUR : 
         return {
             ...state,
             tour : null,
-            isLoading : false,
-            showNavbar : false
+            isLoading : false
         }
 
         case TOUR_ERROR : 
@@ -52,7 +48,6 @@ export default function(state= initialState, action)
             tours : [],
             tour : null,
             isLoading : false,
-            showNavbar : true
         }
 
         default : 

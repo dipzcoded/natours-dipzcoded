@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
+import {connect} from 'react-redux';
+import { login} from '../../actions/auth'
+import { Redirect } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({login, isAuthenticated}) => {
 
 
     const [formData, setFormData] = useState({
@@ -14,8 +17,16 @@ const Login = () => {
     }
 
     const onSubmit = e => {
+        
         e.preventDefault();
-        console.log(formData)
+        login(formData)
+
+    }
+
+
+    if(isAuthenticated)
+    {
+        return <Redirect to="/dashboard" />
     }
 
 
@@ -44,4 +55,8 @@ const Login = () => {
     )
 }
 
-export default Login
+const mapStateToProps = state => ({
+    isAuthenticated : state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, {login})(Login)

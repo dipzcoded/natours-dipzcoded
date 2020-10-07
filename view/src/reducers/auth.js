@@ -2,7 +2,10 @@ import {
         REGISTER_SUCCESS,
         REGISTER_FAIL,
         USER_LOADED,
-        AUTH_ERROR
+        AUTH_ERROR,
+        LOGIN_SUCCESS,
+        LOGIN_FAIL,
+        LOGOUT
 } from '../types'
 import Cookies from 'js-cookie';
 
@@ -31,7 +34,12 @@ export default function(state = initialState, action)
         }
 
         case REGISTER_SUCCESS : 
-        Cookies.set('jwt', payload.token,{expires : 90 })
+        case LOGIN_SUCCESS :
+        Cookies.set('jwt', payload.token,{expires : 90 });
+        if(process.env.NODE_ENV === "production")
+        {
+            Cookies.secure = true;
+        }
         return{
             ...state,
             ...payload,
@@ -40,7 +48,9 @@ export default function(state = initialState, action)
         }
 
         case REGISTER_FAIL : 
+        case LOGIN_FAIL :
         case AUTH_ERROR :
+         case LOGOUT :
         Cookies.remove('jwt');
         return {
             ...state,

@@ -12,6 +12,8 @@ import Cookies from 'js-cookie'
 import {loadUser} from './actions/auth';
 import store from './store';
 import sethAuthToken from './utlis/setAuthToken';
+import TourError from './component/tour/TourError';
+
 
 const token = Cookies.get('jwt');
 if(token)
@@ -39,6 +41,8 @@ const App = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/tours/:tourname/:tourid" component={Tour} />
+        <Route exact path="/:tourname/notfound" render={(rendProps) => <TourError {...rendProps} />} />
+        <Route render={(renProps) => <TourError errDetails="Page Not Found" />} />
       </Switch>
       <Footer />
     </div>

@@ -36,8 +36,10 @@ export const getTour = (id) => async dispatch => {
     } catch (err) {
         const errors = err.response.data.errors;
         console.log(errors);
+    
         dispatch({
-            type : TOUR_ERROR
+            type : TOUR_ERROR,
+            payload : "Sorry Tour not found..."
         })
     }
 

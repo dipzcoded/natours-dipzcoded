@@ -12,11 +12,13 @@ mapboxgl.accessToken = "pk.eyJ1IjoiZGlwemNvZGVkIiwiYSI6ImNrZm44cW1rajA4YjEyc29lM
 
 ReactDOM.render(
   <React.StrictMode>
+
     <Provider store={store}>
     <Router>
     <App />
     </Router>  
     </Provider>
+  
   </React.StrictMode>,
   document.getElementById('root')
 );

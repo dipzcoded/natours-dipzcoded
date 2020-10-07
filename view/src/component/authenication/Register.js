@@ -2,8 +2,9 @@ import React, {useState} from 'react'
 import {register} from '../../actions/auth';
 import {connect} from 'react-redux';
 import {setAlert} from '../../actions/alert';
+import { Redirect } from 'react-router-dom';
 
-const Register = ({register, setAlert}) => {
+const Register = ({register, setAlert, isAuthenticated}) => {
 
     const [formData, setFormData] = useState({
         name : "",
@@ -42,6 +43,11 @@ const Register = ({register, setAlert}) => {
       
     }
 
+    if(isAuthenticated)
+    {
+        return <Redirect to="/dashboard" />
+    }
+
     return (
         <main className="main">
             <div className="login-form">
@@ -77,4 +83,8 @@ const Register = ({register, setAlert}) => {
     )
 }
 
-export default connect(null, {register, setAlert})(Register)
+const mapStateToProps = state => ({
+    isAuthenticated : state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, {register, setAlert})(Register)
