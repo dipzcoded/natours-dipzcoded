@@ -99,13 +99,13 @@ exports.logIn = async (req, res) => {
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return res.status(400).json({ error: [{ msg: "Invalid credentials!" }] });
+      return res.status(400).json({ errors: [{ msg: "Invalid credentials!" }] });
     }
 
     // check if the password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ error: [{ msg: "Invalid credentials!" }] });
+      return res.status(400).json({ errors: [{ msg: "Invalid credentials!" }] });
     }
 
     // signing a token
