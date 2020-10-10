@@ -1322,3 +1322,15 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+.invert {
+  filter: invert();
+  -webkit-filter: invert();
+  height: 4.5rem !important;
+  width: 4.5rem !important;
+  border-radius: none !important;
+  -webkit-border-radius: none !important;
+  -moz-border-radius: none !important;
+  -ms-border-radius: none !important;
+  -o-border-radius: none !important;
+}

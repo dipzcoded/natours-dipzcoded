@@ -1,6 +1,9 @@
 import React,{useState} from 'react'
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
+import {updatePassword} from '../../actions/auth'
 
-const AccountPassword = () => {
+const AccountPassword = ({updatePassword, history}) => {
 
     const [formData, setFormData] = useState({
         passwordCurrent : "",
@@ -15,10 +18,20 @@ const AccountPassword = () => {
         setFormData({...formData,[e.target.name] : e.target.value});
     } 
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+        updatePassword(formData, history)
+        setFormData({
+            passwordCurrent : "",
+            newPassword : "",
+            confirmPassword : ""
+        })
+    }
+
     return (
         <div className="user-view__form-container">
             <h2 className="heading-secondary ma-bt-md">Password change</h2>
-            <form className="form form__user-settings">
+            <form className="form form__user-settings" onSubmit={onSubmit}>
         <div className="form__group">
         <label className="form__label" htmlFor="passwordCurrent">Current Password</label>
         <input className="form__input" name="passwordCurrent" placeholder="••••••••" type="password" value={passwordCurrent} onChange={onChange} required minLength="8" />
@@ -43,4 +56,4 @@ const AccountPassword = () => {
     )
 }
 
-export default AccountPassword
+export default connect(null, {updatePassword})(withRouter(AccountPassword))

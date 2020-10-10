@@ -11,3 +11,7 @@ export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOG_OUT";
+export const UPDATE_USER = "UPDATE_USER"; 
+export const UPDATE_PASSWORD = "UPDATE_PASSWORD";
+export const UPDATE_FAILED = "UPDATE_FAILED";
+export const UPDATE_PASSWORD_FAILED = "UPDATE_PASSWORD_FAILED";

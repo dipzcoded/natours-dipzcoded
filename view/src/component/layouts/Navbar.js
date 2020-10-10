@@ -4,18 +4,19 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {logOut} from '../../actions/auth'
 import User from '../../img/user.png'
+import {withRouter} from 'react-router-dom';
 
-const Navbar = ({auth : {isAuthenticated, isLoading, user}, logOut}) => {
 
+const Navbar = ({auth : {isAuthenticated, isLoading, user}, logOut, history}) => {
 
   const authLinks = (
     <nav className="nav nav--user">
-       <button onClick={logOut} to="/login" className="nav__el">Log Out</button>
+       <button onClick={() => logOut(history)} to="/login" className="nav__el">Log Out</button>
       {user && (
          <Link to="/user/account" className="nav__el">
          {user.photo ? (
            <img src={`/img/users/${user.photo}`} alt={user.name} className="nav__user-img" />
-         ) : <img src={User} alt={user.name} className="nav__user-img" />}
+         ) : <img src={User} alt={user.name} className="nav__user-img" /> } 
          <span>{user.name.split(' ')[0]}</span>
        </Link>
       )}
@@ -64,4 +65,4 @@ const mapStateToProps = (state) => ({
   auth : state.auth
 })
 
-export default connect(mapStateToProps,{logOut})(Navbar)
+export default connect(mapStateToProps,{logOut})(withRouter(Navbar))

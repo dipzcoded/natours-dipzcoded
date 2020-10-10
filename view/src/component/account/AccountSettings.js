@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux';
 import userIcon from '../../img/user.png';
 import AccountPassword from './AccountPassword';
+import {updateUser} from '../../actions/auth';
+import {setAlert} from '../../actions/alert'
 
-const AccountSettings = ({auth : {user}}) => {
+
+const AccountSettings = ({auth : {user}, updateUser}) => {
 
     const [formData,setFormData] = useState({
         name : "",
@@ -24,16 +27,38 @@ const AccountSettings = ({auth : {user}}) => {
 
     },[user])
 
+   
+
+    const {name, email} = formData
     const onChange = (e) => {
         setFormData({...formData,[e.target.name] : e.target.value})
     }
-    const {name, email} = formData
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if(!name && !email)
+        {
+                setAlert("name and email cant be empty","error");
+        }
+        else
+        {
+            updateUser(formData);
+        setFormData({
+            name : "",
+            email : ""
+        })
+        }
+  
+    }
+
+   
+   
 
     return (
         <div className="user-view__content">
             <div className="user-view__form-container">
         <h2 className="heading-secondary ma-bt-md">Your Account Settings</h2>
-        <form className="form form-user-data">
+        <form className="form form-user-data" onSubmit={onSubmit}>
             <div className="form__group">
             <label className="form__label" htmlFor="name">Name</label>
             <input className="form__input" name="name" value={name} required type="text" onChange={onChange} />
@@ -45,7 +70,7 @@ const AccountSettings = ({auth : {user}}) => {
             </div>
 
             <div className="form__group form__photo-upload">
-            {user && user.photo ? (<img className="form__user-photo" src={`/img/users/${user.photo}`} alt={`${user.name} photos`} />) : (<img className="form__user-photo" src={userIcon} alt="default user icon"/>)}
+            {user && (user.photo ? (<img className="form__user-photo" src={`/img/users/${user.photo}`} alt={`${user.name} photos`} />) : (<img className="form__user-photo invert" src={userIcon} alt="default user icon"/>))}
             <a className="btn-text" href="!#">Choose new photo</a>
             </div>
 
@@ -61,8 +86,9 @@ const AccountSettings = ({auth : {user}}) => {
     )
 }
 
+
 const mapStateToProps = state => ({
     auth : state.auth
 })
 
-export default connect(mapStateToProps,null)(AccountSettings);
+export default connect(mapStateToProps,{updateUser})(AccountSettings);
