@@ -11,6 +11,8 @@ const {
   getMonthlyPlan,
   getToursWithin,
   getDistances,
+  resizeTourImages,
+  uploadTourImages
 } = require("../../controllers/tourController");
 
 // tour  custom middlewares
@@ -74,6 +76,8 @@ router
     authRouting,
     restrictRouting("admin", "lead-guide"),
     validateUpdateField,
+    uploadTourImages,
+    resizeTourImages,
     updateTour
   )
   .delete(authRouting, restrictRouting("admin", "lead-guide"), deleteTour);

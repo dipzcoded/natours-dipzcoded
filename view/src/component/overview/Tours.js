@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import {connect} from 'react-redux';
 import {getAllTours} from '../../actions/tours';
 import ToursItem from './ToursItem'
+import {Helmet} from 'react-helmet'
 
 const Tours = ({tours : {tours},getAllTours}) => {
 
@@ -17,6 +18,9 @@ const Tours = ({tours : {tours},getAllTours}) => {
 
     return (
         <main className="main">
+            <Helmet>
+    <title>Natours | Natours | Exciting tours for adventurous people</title>
+            </Helmet>
             <div className="card-container">
                 {/* tour items */}
                 {tourItemCard}

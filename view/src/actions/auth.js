@@ -121,26 +121,36 @@ export const login = (formData) => async dispatch => {
 
  }  
 
- export const updateUser = (formData) => async dispatch => {
+ export const updateUser = ({name, email, photo}) => async dispatch => {
 
     const config = {
         headers : {
-            "Content-type" : "application/json"
+            "Content-type" : "multipart/form-data"
         }
     }
 
-    const body = JSON.stringify(formData);
+  const form = new FormData();
+  form.append('name', name);
+  form.append('email', email);
+  form.append("photo",photo);
 
     try {
 
-        const res = await axios.patch("/api/v1/users/updateMe",body, config);
+        const res = await axios.patch("/api/v1/users/updateMe",form, config);
         dispatch({
             type : UPDATE_USER, payload : res.data
         })
 
         dispatch(setAlert("Data updated successfully!","success"))
   
-    } catch (error) {
+    } catch (err) {
+
+        const errors = err.response.data.errors;
+        if(errors)
+        {
+            errors.forEach(er => dispatch(setAlert(er.msg,"error")))
+        }
+
             dispatch({
                 type : UPDATE_FAILED
             })

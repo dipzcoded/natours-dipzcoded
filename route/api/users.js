@@ -21,6 +21,8 @@ const {
   deleteUser,
   updateMe,
   deleteMe,
+  uploadUserPhoto,
+  resizeUserPhoto
 } = require("../../controllers/userController");
 
 const {
@@ -29,6 +31,8 @@ const {
   updatePassword,
 } = require("../../controllers/authController");
 // const { route } = require("./auth");
+
+
 
 // Routing
 router.route("/forgotPassword").post(forgotPassword);
@@ -41,7 +45,7 @@ router.use(authRouting);
 router
   .route("/updateMyPassword")
   .patch(updatePasswordValidation, updatePassword);
-router.route("/updateMe").patch(updateMe);
+router.route("/updateMe").patch(uploadUserPhoto,resizeUserPhoto,updateMe);
 router.route("/deleteMe").delete(deleteMe);
 
 // restricting the route to only admins  only

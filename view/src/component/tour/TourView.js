@@ -4,6 +4,7 @@ import {formatDate} from '../../Helper';
 import TourReview from './TourReview';
 import TourBooking from './TourBooking'
 import TourMap from './TourMap';
+import {Helmet} from 'react-helmet' 
 
 const TourView = ({tour}) => {
 
@@ -26,6 +27,9 @@ const TourView = ({tour}) => {
 
     return (
         <Fragment>
+            <Helmet>
+    <title>Natours | {tour.name} Tour</title>
+            </Helmet>
             {/* Tour Header */}
         <section className="section-header">
             <div className="header__hero">
@@ -119,8 +123,10 @@ const TourView = ({tour}) => {
         {
                 <TourMap tour={tour} />
             }
-        <section className="section-reviews">
-            <div className="reviews"> 
+            {
+                tour.reviews.length > 0 && (
+                    <section className="section-reviews">
+                    <div className="reviews"> 
                 {
                     tour.reviews.map(review => (
                         <TourReview review={review} key={review._id} />
@@ -128,6 +134,9 @@ const TourView = ({tour}) => {
                 }
             </div>
             </section>
+                )
+            }
+           
             {
                 <TourBooking images={tour.images} />
             }

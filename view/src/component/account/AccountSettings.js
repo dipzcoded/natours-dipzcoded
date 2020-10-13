@@ -8,10 +8,12 @@ import {setAlert} from '../../actions/alert'
 
 const AccountSettings = ({auth : {user}, updateUser}) => {
 
-    const [formData,setFormData] = useState({
+    const [formDatas,setFormData] = useState({
         name : "",
-        email : ""
+        email : "",
     });
+
+    const [photo,setPhoto] = useState("");
     
 
     useEffect(() => {
@@ -29,24 +31,25 @@ const AccountSettings = ({auth : {user}, updateUser}) => {
 
    
 
-    const {name, email} = formData
+    const {name, email} = formDatas;
     const onChange = (e) => {
-        setFormData({...formData,[e.target.name] : e.target.value})
+        setFormData({...formDatas,[e.target.name] : e.target.value})
+    }
+
+    const onPhotoChange = (e) => {
+        setPhoto(e.target.files[0]);
+        console.log(e.target.files[0]);
     }
 
     const onSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); 
         if(!name && !email)
         {
                 setAlert("name and email cant be empty","error");
         }
         else
-        {
-            updateUser(formData);
-        setFormData({
-            name : "",
-            email : ""
-        })
+        { 
+        updateUser({name,email, photo});
         }
   
     }
@@ -71,7 +74,8 @@ const AccountSettings = ({auth : {user}, updateUser}) => {
 
             <div className="form__group form__photo-upload">
             {user && (user.photo ? (<img className="form__user-photo" src={`/img/users/${user.photo}`} alt={`${user.name} photos`} />) : (<img className="form__user-photo invert" src={userIcon} alt="default user icon"/>))}
-            <a className="btn-text" href="!#">Choose new photo</a>
+            <input type="file"   accept="image/*" name="photo"   onChange={onPhotoChange} />
+            <label htmlFor="photo">Choose new photo</label>
             </div>
 
             <div className="form__group right">
