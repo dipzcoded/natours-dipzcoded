@@ -20,10 +20,7 @@ const Login = ({login, isAuthenticated}) => {
         
         e.preventDefault();
         login(formData)
-        setFormData({
-            email : "",
-            password : ""
-        })
+       
 
     }
 

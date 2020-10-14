@@ -3,7 +3,8 @@ const User = require("../model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
-const sendEmail = require("../utils/email");
+const Email = require("../utils/email");
+const ApiError = require('../utils/apiError')
 
 const initJwtToken = (userid, res) => {
   // creating a payload
@@ -76,13 +77,19 @@ exports.signUp = async (req, res) => {
 
     // saving the user
     await user.save();
-
+   
     // signing a user
     initJwtToken(user._id, res);
+     // // // Setting up email to new users
+     const url = `http://localhost:3000/user/account`;
+     await new Email(user, url).sendWelcome();
+     console.log(url);
+    
   } catch (error) {
     if (error.name === "MongoError") {
       return res.status(400).json({ errors: [{ msg: "User already exist!" }] });
     }
+    console.log(error)
     res.status(500).send("Server Error!");
   }
 };
@@ -139,11 +146,11 @@ exports.forgotPassword = async (req, res) => {
 
     const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetUrl}./nIf you didnt forget your password please kindly ignore this email!`;
 
-    await sendEmail({
-      email: user.email,
-      subject: "Your password reset token (valid for 10 min)",
-      message,
-    });
+    // await sendEmail({
+    //   email: user.email,
+    //   subject: "Your password reset token (valid for 10 min)",
+    //   message,
+    // });
 
     res.status(200).json({
       status: "sucess",
@@ -194,7 +201,7 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
-exports.updatePassword = async (req, res) => {
+exports.updatePassword = async (req, res, next) => {
   try {
     // 1. get user from collection
     const user = await User.findById(req.user.id).select("+password");
@@ -210,9 +217,7 @@ exports.updatePassword = async (req, res) => {
     );
 
     if (!isMatch) {
-      return res.status(400).json({
-        errors: [{ msg: "your current password is wrong." }],
-      });
+      return next(new ApiError("invalid current password...please try again", 400))
     }
 
     // 3. if so, update password

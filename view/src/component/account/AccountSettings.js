@@ -6,7 +6,7 @@ import {updateUser} from '../../actions/auth';
 import {setAlert} from '../../actions/alert'
 
 
-const AccountSettings = ({auth : {user}, updateUser}) => {
+const AccountSettings = ({auth : {user}, updateUser, setAlert}) => {
 
     const [formDatas,setFormData] = useState({
         name : "",
@@ -64,12 +64,12 @@ const AccountSettings = ({auth : {user}, updateUser}) => {
         <form className="form form-user-data" onSubmit={onSubmit}>
             <div className="form__group">
             <label className="form__label" htmlFor="name">Name</label>
-            <input className="form__input" name="name" value={name} required type="text" onChange={onChange} />
+            <input className="form__input" name="name" value={name}  type="text" onChange={onChange} />
             </div>
 
             <div className="form__group ma-bt-md">
             <label className="form__label" htmlFor="email">Name</label>
-            <input className="form__input" name="email" value={email} required type="email" onChange={onChange} />
+            <input className="form__input" name="email" value={email}  type="email" onChange={onChange} />
             </div>
 
             <div className="form__group form__photo-upload">
@@ -95,4 +95,4 @@ const mapStateToProps = state => ({
     auth : state.auth
 })
 
-export default connect(mapStateToProps,{updateUser})(AccountSettings);
+export default connect(mapStateToProps,{updateUser, setAlert})(AccountSettings);

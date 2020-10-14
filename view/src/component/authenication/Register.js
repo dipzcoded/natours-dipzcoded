@@ -33,12 +33,7 @@ const Register = ({register, setAlert, isAuthenticated}) => {
         else
         {
             register(formData);
-            setFormData({
-                name : "",
-                email: "",
-                password : "",
-                confirmPassword : ""
-               })
+           
         }
       
     }
@@ -71,7 +66,7 @@ const Register = ({register, setAlert, isAuthenticated}) => {
 
                 <div className="form__group ma-bt-md">
                 <label className="form__label" htmlFor="confirmPassword">Confirm Password</label>
-                <input id="confirmPassword" name="confirmPassword" className="form__input" value={confirmPassword} type="password" placeholder="..........."   onChange={onChange}  />
+                <input id="confirmPassword" name="confirmPassword" className="form__input" value={confirmPassword} type="password" placeholder="..........." minLength="8"   onChange={onChange}  />
                 </div>
 
                 <div className="form__group">

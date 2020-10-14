@@ -2,8 +2,9 @@ import React,{useState} from 'react'
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom'
 import {updatePassword} from '../../actions/auth'
+import {setAlert} from '../../actions/alert'
 
-const AccountPassword = ({updatePassword, history}) => {
+const AccountPassword = ({updatePassword, history, setAlert}) => {
 
     const [formData, setFormData] = useState({
         passwordCurrent : "",
@@ -20,12 +21,20 @@ const AccountPassword = ({updatePassword, history}) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        updatePassword(formData, history)
+        if(newPassword !== confirmPassword)
+        {
+             setAlert("password must match!..please try again","error");
+        }
+        else
+        {
+            updatePassword(formData,history)
         setFormData({
             passwordCurrent : "",
             newPassword : "",
             confirmPassword : ""
         })
+        }
+        
     }
 
     return (
@@ -56,4 +65,4 @@ const AccountPassword = ({updatePassword, history}) => {
     )
 }
 
-export default connect(null, {updatePassword})(withRouter(AccountPassword))
+export default connect(null, {updatePassword, setAlert})(withRouter(AccountPassword))

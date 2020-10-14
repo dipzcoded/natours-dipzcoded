@@ -181,7 +181,7 @@ export const login = (formData) => async dispatch => {
         const errors = err.response.data.errors;
         if(errors)
         {
-            errors.forEach((el) => dispatch(setAlert(el.msg,"errror")))
+            errors.forEach((el) => dispatch(setAlert(el.msg,"error")))
         }
 
         dispatch({

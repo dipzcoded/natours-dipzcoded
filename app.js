@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require("express");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
@@ -8,6 +9,11 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
+
+// setting pug template engine
+// app.set('view engine', 'pug');
+// app.set('views',path.join(__dirname,'dev-data/templates'));
+
 // setting up middleware
 
 // set Security HTTP Headers
