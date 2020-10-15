@@ -11,8 +11,8 @@ const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
 
 // setting pug template engine
-// app.set('view engine', 'pug');
-// app.set('views',path.join(__dirname,'dev-data/templates'));
+app.set('view engine', 'pug');
+app.set('views',path.join(__dirname,'dev-data/templates'));
 
 // setting up middleware
 

@@ -80,10 +80,9 @@ exports.signUp = async (req, res) => {
    
     // signing a user
     initJwtToken(user._id, res);
-     // // // Setting up email to new users
+      // Setting up email to new users
      const url = `http://localhost:3000/user/account`;
      await new Email(user, url).sendWelcome();
-     console.log(url);
     
   } catch (error) {
     if (error.name === "MongoError") {
@@ -124,37 +123,30 @@ exports.logIn = async (req, res) => {
 };
 
 // forgot password
-exports.forgotPassword = async (req, res) => {
+exports.forgotPassword = async (req, res,next) => {
   let user;
   try {
     // Get user based on posted email
     user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ msg: "There is no user with email address" });
+      return next(new ApiError("There is no user with email address",404))
     }
     // Generate the random reset token
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
     // set it to user's email
-    const resetUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/api/v1/users/resetPassword/${resetToken}`;
+    const resetUrl = `http://localhost:3000/resetpassword/${resetToken}`;
 
-    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetUrl}./nIf you didnt forget your password please kindly ignore this email!`;
+  
+    await new Email(user,resetUrl).sendPasswordReset();
 
-    // await sendEmail({
-    //   email: user.email,
-    //   subject: "Your password reset token (valid for 10 min)",
-    //   message,
-    // });
+    
 
     res.status(200).json({
       status: "sucess",
-      message: "Token sent to email!",
+      message: "Token sent to your email!",
     });
   } catch (error) {
     user.passwordResetToken = undefined;

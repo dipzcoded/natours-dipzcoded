@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {connect} from 'react-redux';
 import { login} from '../../actions/auth'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link} from 'react-router-dom';
 
 const Login = ({login, isAuthenticated}) => {
 
@@ -46,8 +46,13 @@ const Login = ({login, isAuthenticated}) => {
                 <input id="password" name="password" className="form__input" type="password" placeholder="..........." value={password} minLength="8" required onChange={onChange} />
                 </div>
 
-                <div className="form__group">
+                <div className="form__group flex">
                 <button className="btn btn--green">Login</button>
+                <Link  to="/forgotpassword" style={{
+                    textDecoration : "none",
+                    fontSize : "14.8px",
+                    color : "#55c57a"
+                }}>forgot password</Link>
                 </div>
 
                 </form>

@@ -11,7 +11,10 @@ import {
     UPDATE_USER,
     UPDATE_PASSWORD,
     UPDATE_PASSWORD_FAILED,
-    UPDATE_FAILED
+    UPDATE_FAILED,
+    RESET_PASSWORD_FAIL,
+    RESET_PASSWORD_SUCCESS,
+    SENT_TOKEN
 } from '../types';
 import {setAlert} from './alert';
 import sethAuthToken from '../utlis/setAuthToken';
@@ -188,6 +191,67 @@ export const login = (formData) => async dispatch => {
             type : UPDATE_PASSWORD_FAILED
         })
         
+    }
+
+ }
+
+ export const sentTokenReset = (data) => async dispatch => {
+
+
+    const config = {
+        headers : {
+            "Content-type" : "application/json"
+        }
+    }
+
+    const body = JSON.stringify(data);
+
+    try {
+        const res = await axios.post('/api/v1/users/forgotPassword',body,config);
+        const {message} = res.data;
+        dispatch({type : SENT_TOKEN})
+        if(message)
+        {
+            dispatch(setAlert(message,"success"));
+        }
+        
+    } catch (err) {
+
+        const errors = err.response.data.errors;
+        console.log(errors)
+        if(errors)
+        {
+            errors.forEach(el => dispatch(setAlert(el.msg,"error")))
+        }
+        
+    }
+
+ } 
+
+ export const passwordReset = (token, formData) => async dispatch => {
+
+    const config = {
+        headers : {
+            "Content-type" : "application/json"
+        }
+    }
+
+    const body = JSON.stringify(formData);
+
+    try {
+        const res = await axios.patch(`/api/v1/users/resetPassword/${token}`,body,config);
+        dispatch({type : RESET_PASSWORD_SUCCESS, payload : res.data})
+        dispatch(setAlert("Login Successful","success"))
+        dispatch(loadUser());
+
+    } catch (err) {
+        const errors = err.response.data.errors;
+        if(errors)
+        {
+            errors.forEach(el => dispatch(setAlert(el.msg,"error")))
+        }
+
+        dispatch({type : RESET_PASSWORD_FAIL})
     }
 
  }

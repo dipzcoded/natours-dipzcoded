@@ -9,7 +9,10 @@ import {
         UPDATE_USER,
         UPDATE_PASSWORD,
         UPDATE_FAILED,
-        UPDATE_PASSWORD_FAILED
+        UPDATE_PASSWORD_FAILED,
+        RESET_PASSWORD_FAIL,
+        RESET_PASSWORD_SUCCESS,
+        SENT_TOKEN
 } from '../types'
 import Cookies from 'js-cookie';
 
@@ -40,6 +43,7 @@ export default function(state = initialState, action)
         case REGISTER_SUCCESS : 
         case LOGIN_SUCCESS :
         case UPDATE_PASSWORD :
+        case RESET_PASSWORD_SUCCESS :    
         Cookies.set('jwt', payload.token,{expires : 90 });
         if(process.env.NODE_ENV === "production")
         {
@@ -60,16 +64,19 @@ export default function(state = initialState, action)
         }
 
         case UPDATE_FAILED : 
+        case SENT_TOKEN :
         return {
             ...state,
             isLoading : false
         }
 
+
         case REGISTER_FAIL : 
         case LOGIN_FAIL :
         case AUTH_ERROR :
         case LOGOUT :
-        case UPDATE_PASSWORD_FAILED :    
+        case UPDATE_PASSWORD_FAILED :
+        case RESET_PASSWORD_FAIL :    
         Cookies.remove('jwt');
         return {
             ...state,
