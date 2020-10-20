@@ -52,7 +52,7 @@ const Login = ({login, isAuthenticated}) => {
                     textDecoration : "none",
                     fontSize : "14.8px",
                     color : "#55c57a"
-                }}>forgot password</Link>
+                }}>forgot password?</Link>
                 </div>
 
                 </form>

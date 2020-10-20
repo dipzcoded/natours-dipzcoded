@@ -9,6 +9,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
+const { dirname } = require('path');
 
 // setting pug template engine
 app.set('view engine', 'pug');
@@ -69,7 +70,8 @@ app.use((req, res, next) => {
 app.use("/api/v1/tours", require(`${__dirname}/route/api/tours`));
 app.use("/api/v1/users", require(`${__dirname}/route/api/users`));
 app.use("/api/v1/auth", require(`${__dirname}/route/api/auth.js`));
-app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews.js`));
+app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
+app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Route not found ${req.originalUrl}`, 404));

@@ -2,7 +2,10 @@ import {
     GET_TOURS,
     GET_TOUR,
     CLEAR_TOUR,
-    TOUR_ERROR
+    TOUR_ERROR,
+    PAYMENT_PROCESSING,
+    PAYMENT_PROCESSED,
+    PAYMENT_ERROR
 } from '../types'
 
 
@@ -12,7 +15,9 @@ const initialState = {
     tours : [],
     tour : null,
     error : null,
-    isLoading : true,
+    isLoading : true, 
+    session : null,
+    isProcessing : false
 }
 
 
@@ -51,6 +56,20 @@ export default function(state= initialState, action)
             isLoading : false,
             error : payload
         }
+        
+        case PAYMENT_PROCESSING:
+            return {
+                ...state,
+                isProcessing : true
+            }
+
+            case PAYMENT_PROCESSED : 
+            case PAYMENT_ERROR :
+            return {
+                ...state,
+                isProcessing : false,
+                
+            }
 
         default : 
         return state;

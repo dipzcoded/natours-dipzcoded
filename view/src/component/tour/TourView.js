@@ -138,7 +138,7 @@ const TourView = ({tour}) => {
             }
            
             {
-                <TourBooking images={tour.images} />
+                <TourBooking images={tour.images} tourid={tour._id} />
             }
         </Fragment>
     )

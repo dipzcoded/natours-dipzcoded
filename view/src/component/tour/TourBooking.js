@@ -1,7 +1,17 @@
 import React from 'react'
 import LogoWhite from '../../img/logo-white.png';
+import {connect} from 'react-redux';
+import {Link} from "react-router-dom"
+import {bookingTour} from '../../actions/tours';
 
-const TourBooking = ({images}) => {
+const TourBooking = ({images, bookingTour, isAuthenticated, isProcessing, tourid}) => {
+
+
+    const onClick = (e) => {
+        e.preventDefault();
+        bookingTour(tourid)
+    }
+
     return (
         <section className="section-cta">
             <div className="cta">
@@ -19,11 +29,16 @@ const TourBooking = ({images}) => {
             <p className="cta__text">
             10 days. 1 adventure. Infinite memories. Make it yours today!
             </p>
-            <button className="btn btn--green span-all-rows">Book tour now!</button>
+        {isAuthenticated ? (<button className="btn btn--green span-all-rows" onClick={onClick}>{isProcessing ? "Processing" : "Book tour now!"}</button>) : (<Link className="btn btn--green span-all-rows" to="/login">Log in To book</Link>)}
             </div>
         </div>
         </section>
     )
 }
 
-export default TourBooking
+const mapStateToProps = state => ({
+    isAuthenticated : state.auth.isAuthenticated,
+    isProcessing : state.tours.isProcessing
+})
+
+export default connect(mapStateToProps, {bookingTour})(TourBooking)
