@@ -1,6 +1,7 @@
-import React from 'react'
+ import React from 'react'
 import {connect} from 'react-redux';
 import icons from '../../img/icons.svg'
+import {NavLink} from 'react-router-dom'
 
 const AccountNavbar = ({auth : {user}}) => {
 
@@ -56,41 +57,41 @@ const AccountNavbar = ({auth : {user}}) => {
             <nav className="user-view__menu">
         <ul className="side-nav">
 
-        <li className="side-nav--active"> 
+        <NavLink exact activeClassName="side-nav--active" to ="/user/account"> 
         <a href="!#">
             <svg>
         <use xlinkHref={`${icons}#icon-settings`}></use>
             </svg>
             | settings
         </a>
-        </li>
+        </NavLink>
 
-        <li> 
+        <NavLink exact activeClassName="side-nav--active" to="/user/bookings"> 
         <a href="!#">
             <svg>
         <use xlinkHref={`${icons}#icon-briefcase`}></use>
             </svg>
             | My bookings
         </a>
-        </li>
+        </NavLink>
 
-        <li> 
+        <NavLink to="/"> 
         <a href="!#">
             <svg>
         <use xlinkHref={`${icons}#icon-star`}></use>
             </svg>
             | My reviews
         </a>
-        </li>
+        </NavLink>
 
-        <li> 
+        <NavLink to="/"> 
         <a href="!#">
             <svg>
         <use xlinkHref={`${icons}#icon-credit-card`}></use>
             </svg>
             | Billings
         </a>
-        </li>
+        </NavLink>
         </ul>
         {/* show the adminNav only when the role is an admin Role */}
         {user && user.role === "admin" && adminNav}

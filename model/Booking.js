@@ -9,7 +9,7 @@ const bookingSchema = new mongoose.Schema({
 
     user : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'user'
+        ref : 'User'
     },
     price : {
         type : Number,
@@ -30,6 +30,7 @@ const bookingSchema = new mongoose.Schema({
 bookingSchema.pre(/^find/, function(next){
 
     this.populate('user').populate('tour',['name'])
+    next();
 
 })
 

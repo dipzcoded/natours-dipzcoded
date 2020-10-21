@@ -3,6 +3,7 @@ import TourView from './TourView'
 import {connect} from 'react-redux';
 import {getTour} from '../../actions/tours';
 import {Redirect} from 'react-router-dom'
+import Loader from '../layouts/Loader';
 
 const Tour = ({match, getTour, tours : {tour, error}}) => {
 
@@ -24,7 +25,7 @@ const Tour = ({match, getTour, tours : {tour, error}}) => {
     return (
    <Fragment>
        {/* {!isLoading && (tourAv === false && !tour  ? <TourError /> : <TourView tour={tour} />)} */}
-       {tour !== null && <TourView  tour={tour}  />}
+       {tour !== null ? <TourView  tour={tour}  /> : <Loader />}
    </Fragment>
     )
           

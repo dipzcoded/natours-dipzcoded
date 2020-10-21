@@ -17,6 +17,7 @@ import UserAccount from './component/account/UserAccount';
 import PrivateRoute from './component/routing/PrivateRoute';
 import ForgotPassword from './component/authenication/ForgotPassword';
 import ResetPassword from './component/authenication/ResetPassword';
+import BookingAccount from './component/bookings/BookingAccount';
 
 
 const token = Cookies.get('jwt');
@@ -47,6 +48,7 @@ const App = () => {
         <Route exact path="/forgotpassword" component={ForgotPassword} />
         <Route exact path="/resetpassword/:token" component={ResetPassword} />
         <PrivateRoute exact path="/user/account" component={UserAccount} />
+        <PrivateRoute exact path="/user/bookings" component={BookingAccount} />
         <Route exact path="/tours/:tourname/:tourid" render={(rendProps) => <Tour {...rendProps} />} />
         <Route exact path="/tour/notfound" render={(rendProps) => <TourError {...rendProps} />} />
         <Route render={(renProps) => <TourError errDetails="Page Not Found" />} />

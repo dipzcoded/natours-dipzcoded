@@ -1,14 +1,27 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, Fragment} from 'react'
 import {connect} from 'react-redux';
 import {getAllTours} from '../../actions/tours';
 import ToursItem from './ToursItem'
 import {Helmet} from 'react-helmet'
+import queryString from 'query-string';
+import {createBookings} from '../../actions/bookings'
+import Loader from '../layouts/Loader';
+import {withRouter} from 'react-router-dom';
 
-const Tours = ({tours : {tours},getAllTours}) => {
+const Tours = ({tours : {tours},getAllTours, location,createBookings, isAuthenticated, history}) => {
 
     useEffect(() => {
         getAllTours();
-    },[getAllTours])
+        if(location.search)
+        {
+           const {tour, user,price} = queryString.parse(location.search);
+         
+           createBookings({tour,user,price}, history)
+
+        }
+    },[getAllTours, location])
+
+
 
 
     // creating the touritem card
@@ -17,20 +30,25 @@ const Tours = ({tours : {tours},getAllTours}) => {
     ))
 
     return (
-        <main className="main">
-            <Helmet>
-    <title>Natours | Natours | Exciting tours for adventurous people</title>
-            </Helmet>
-            <div className="card-container">
-                {/* tour items */}
-                {tourItemCard}
-            </div>
-        </main>
+        <Fragment>
+            {tours.length === 0 ? (<Loader />) : (
+                <main className="main">
+                <Helmet>
+        <title>Natours | Natours | Exciting tours for adventurous people</title>
+                </Helmet>
+                <div className="card-container">
+                    {/* tour items */}
+                    {tourItemCard}
+                </div>
+            </main>
+            ) }
+        </Fragment>
     )
 }
 
 const mapsStateToProps = state =>({
-    tours : state.tours
+    tours : state.tours,
+    isAuthenticated : state.auth.isAuthenticated
 })
 
-export default connect(mapsStateToProps, {getAllTours})(Tours)
+export default connect(mapsStateToProps, {getAllTours, createBookings})(withRouter(Tours))

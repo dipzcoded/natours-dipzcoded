@@ -16,7 +16,6 @@ const initialState = {
     tour : null,
     error : null,
     isLoading : true, 
-    session : null,
     isProcessing : false
 }
 
