@@ -9,7 +9,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
-const { dirname } = require('path');
+const compression = require('compression');
+
 
 // setting pug template engine
 app.set('view engine', 'pug');
@@ -66,6 +67,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// compressing the data
+app.use(compression());
+
 // Routing routers
 app.use("/api/v1/tours", require(`${__dirname}/route/api/tours`));
 app.use("/api/v1/users", require(`${__dirname}/route/api/users`));
@@ -78,5 +82,16 @@ app.all("*", (req, res, next) => {
 });
 
 app.use(ErrorHandlers);
+
+
+// serve static assets in production
+if(process.env.NODE_ENV === "production")
+{
+  // set static folder
+  app.use(express.static('view/build'));
+  app.get('*', (req,res) => {
+    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
+  })
+}
 
 module.exports = app;

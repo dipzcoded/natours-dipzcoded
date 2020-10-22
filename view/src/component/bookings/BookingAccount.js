@@ -25,7 +25,7 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}}) =>
                 </Helmet>
                 <div className="card-container">
                    {bookings.length === 0 ? (<h1 style={{
-                       justifySelf : "center"
+                       gridColumn : " 1 / -1"
                    }}> No Bookings Made By You</h1>) : (
                     bookedTourCard
                    )}

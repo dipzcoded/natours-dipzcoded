@@ -8,7 +8,8 @@
     "server:prod": "NODE_ENV=production nodemon server.js",
     "client": "npm start --prefix view",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix view && npm run build --prefix view"
   },
   "author": "Akerele Oladipupo",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "D": "^1.0.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "config": "^3.3.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
