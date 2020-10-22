@@ -61,7 +61,7 @@ exports.resizeTourImages = async (req, res, next) =>
   
     next();
    } catch (error) {
-     console.log(error.message);
+    //  console.log(error.message);
      res.status(500).send("Server Error!");
    }
 
@@ -113,7 +113,7 @@ exports.getTourStats = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error.message);
+    // console.log(error.message);
     res.status(500).send("Server Error!!");
   }
 };
@@ -167,7 +167,7 @@ exports.getMonthlyPlan = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error.message);
+    // console.log(error.message);
     res.status(500).send("Server Error!!");
   }
 };

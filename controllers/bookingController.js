@@ -37,7 +37,7 @@ exports.getCheckoutSession = async (req,res) => {
         })
 
     } catch (error) {
-        console.log(error.message)
+        // console.log(error.message)
         res.status(500).send('Server Error');
         
     }
@@ -60,7 +60,7 @@ exports.getBookingByUser = async (req,res) => {
         })
         
     } catch (error) {
-        console.log(error.message)
+        // console.log(error.message)
         res.status(500).send('Server Error');
     }
 
@@ -83,7 +83,7 @@ exports.createBookingByUser = async (req,res) => {
         
     } catch (error) {
 
-        console.log(error.message);
+        // console.log(error.message);
         res.status(500).send('Server Error!');
         
     }

@@ -88,7 +88,7 @@ exports.signUp = async (req, res) => {
     if (error.name === "MongoError") {
       return res.status(400).json({ errors: [{ msg: "User already exist!" }] });
     }
-    console.log(error)
+    // console.log(error)
     res.status(500).send("Server Error!");
   }
 };
@@ -117,7 +117,7 @@ exports.logIn = async (req, res) => {
     // signing a token
     initJwtToken(user._id, res);
   } catch (error) {
-    console.error(error.message);
+    // console.error(error.message);
     res.status(500).send("Server Error!");
   }
 };
@@ -152,7 +152,7 @@ exports.forgotPassword = async (req, res,next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
-    console.error(error.message);
+    // console.error(error.message);
     res.status(500).send("Server Error!");
   }
 };
@@ -188,7 +188,7 @@ exports.resetPassword = async (req, res) => {
     // 4. log in user and send jwt
     initJwtToken(user._id, res);
   } catch (error) {
-    console.log(error.message);
+    // console.log(error.message);
     res.status(500).send("Server Error!");
   }
 };
@@ -221,7 +221,7 @@ exports.updatePassword = async (req, res, next) => {
     //4. log user in, send jwt
     initJwtToken(user._id, res);
   } catch (error) {
-    console.error(error.message);
+    // console.error(error.message);
     res.status(500).send("Server Error!");
   }
 };

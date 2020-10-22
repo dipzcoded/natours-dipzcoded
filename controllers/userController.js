@@ -56,7 +56,7 @@ exports.resizeUserPhoto = async (req,res, next) => {
     await sharp(req.file.buffer).resize(500, 500).toFormat('jpeg').jpeg({quality : 90}).toFile(`view/public/img/users/${req.file.filename}`);
     next();
    } catch (error) {
-     console.log(error.message);
+    //  console.log(error.message);
      res.status(500).send("Server Error!");
    }
      
@@ -90,7 +90,7 @@ exports.deleteUser = deleteOne(User);
 
 exports.updateMe = async (req, res) => {
 
-  console.log(req.file)
+  // console.log(req.file)
 
   // 1) create error if user Post password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -123,7 +123,7 @@ exports.updateMe = async (req, res) => {
 
     res.status(200).json({ user });
   } catch (error) {
-    console.error(error.message);
+    // console.error(error.message);
     res.status(500).send("Server Error!");
   }
 };
@@ -134,7 +134,7 @@ exports.deleteMe = async (req, res) => {
 
     res.status(204).json({ msg: "User deleted" });
   } catch (error) {
-    console.error(error.message);
+    // console.error(error.message);
     res.status(500).send("Server Error!");
   }
 };

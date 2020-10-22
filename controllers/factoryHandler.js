@@ -25,7 +25,7 @@ exports.getAllOne = (Model, type) => {
 
         if (type === "Tour") {
           secretTourNo = Model.find({ secretTour: { $eq: true } });
-          console.log(secretTourNo.length);
+          // console.log(secretTourNo.length);
           if (secretTourNo.length > 0 && secretTourNo !== undefined) {
             countTot = countTot - secretTourNo.length;
           }
@@ -48,7 +48,7 @@ exports.getAllOne = (Model, type) => {
         },
       });
     } catch (error) {
-      console.error(error.message);
+      // console.error(error.message);
       res.status(500).send("Server Error");
     }
   };
@@ -78,7 +78,7 @@ exports.getOne = (Model, popOptions) => {
       });
     } catch (error) {
       // console.error(error.message);
-      console.log(error.kind)
+      // console.log(error.kind)
 
       if (error.kind === "ObjectId") {
       return next(new ApiError("Invalid tour id", 404));
@@ -106,7 +106,7 @@ exports.deleteOne = (Model) => {
         message: "delete successful",
       });
     } catch (error) {
-      console.error(error.message);
+      // console.error(error.message);
 
       if (error.kind === "ObjectId") {
         next(new ApiError("Invalid tour id", 404));
@@ -141,7 +141,7 @@ exports.updateOne = (Model) => {
         },
       });
     } catch (error) {
-      console.error(error.message);
+      // console.error(error.message);
 
       if (error.kind === "ObjectId") {
         next(new ApiError("Invalid tour id", 404));
@@ -170,7 +170,7 @@ exports.createOne = (Model) => {
         },
       });
     } catch (error) {
-      console.error(error.message);
+      // console.error(error.message);
 
       if (
         error.message.includes(
