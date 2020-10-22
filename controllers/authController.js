@@ -81,7 +81,7 @@ exports.signUp = async (req, res) => {
     // signing a user
     initJwtToken(user._id, res);
       // Setting up email to new users
-     const url = `http://localhost:3000/user/account`;
+     const url = `${process.env.REACT_URL}user/account`;
      await new Email(user, url).sendWelcome();
     
   } catch (error) {
@@ -137,7 +137,7 @@ exports.forgotPassword = async (req, res,next) => {
     await user.save({ validateBeforeSave: false });
 
     // set it to user's email
-    const resetUrl = `http://localhost:3000/resetpassword/${resetToken}`;
+    const resetUrl = `${process.env.REACT_URL}resetpassword/${resetToken}`;
 
   
     await new Email(user,resetUrl).sendPasswordReset();
