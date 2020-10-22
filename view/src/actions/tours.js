@@ -19,7 +19,7 @@ export const getAllTours = () => async dispatch => {
         dispatch({type : GET_TOURS, payload:res.data})
     } catch (err) {
         const errors = err.response.data.errors;
-        console.log(errors)
+        // console.log(errors)
         dispatch({
             type : TOUR_ERROR
         })
@@ -39,10 +39,10 @@ export const getTour = (id) => async dispatch => {
         
     } catch (err) {
         const errors = err.response.data.errors;
-        if(errors)
-        {
-            console.log(errors);
-        }
+        // if(errors)
+        // {
+        //     console.log(errors);
+        // }
     
         dispatch({
             type : TOUR_ERROR,

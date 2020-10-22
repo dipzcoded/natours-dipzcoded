@@ -38,7 +38,7 @@ const AccountSettings = ({auth : {user}, updateUser, setAlert}) => {
 
     const onPhotoChange = (e) => {
         setPhoto(e.target.files[0]);
-        console.log(e.target.files[0]);
+        // console.log(e.target.files[0]);
     }
 
     const onSubmit = (e) => {
