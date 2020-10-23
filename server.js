@@ -4,11 +4,10 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 
 // developers modules
-const connectDB = require("./database/config");
+
 const app = require("./app");
 
-// connection mongoDB with my express framework
-connectDB();
+
 
 // creating a port for our server
 const port = process.env.PORT || 5000;

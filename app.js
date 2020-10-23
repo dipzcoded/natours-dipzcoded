@@ -10,7 +10,10 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
 const compression = require('compression');
+const connectDB = require("./database/config");
 
+// connection mongoDB with my express framework
+connectDB();
 
 // setting up middleware
 // serve static assets in production
@@ -72,6 +75,7 @@ app.use("/api/v1/users", require(`${__dirname}/route/api/users`));
 app.use("/api/v1/auth", require(`${__dirname}/route/api/auth.js`));
 app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
+app.use(ErrorHandlers);
 
 if(process.env.NODE_ENV === "production")
 {
@@ -82,12 +86,9 @@ if(process.env.NODE_ENV === "production")
   })
 }
 
-
-app.use(ErrorHandlers);
-
-app.all("*", (req, res, next) => {
-  next(new ApiError(`Route not found ${req.originalUrl}`, 404));
-});
+// app.all("*", (req, res, next) => {
+//   next(new ApiError(`Route not found ${req.originalUrl}`, 404));
+// });
 
 
 
