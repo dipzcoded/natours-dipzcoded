@@ -18,8 +18,9 @@ if(process.env.NODE_ENV === "production")
 {
   // set static folder
   app.use(express.static('view/build'));
-  app.get('*', (req,res) => {
+  app.get('*', (req,res,next) => {
     res.sendFile(path.resolve(__dirname,'view','build','index.html'))
+    next();
   })
 }
 
