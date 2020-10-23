@@ -65,17 +65,6 @@ app.use((req, res, next) => {
   next();
 });
 
-if(process.env.NODE_ENV === "production")
-{
-  // set static folder
-  app.use(express.static('view/build'));
-  app.get('*', (req,res) => {
-    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
-  })
-}
-
-// compressing the data
-app.use(compression());
 
 // Routing routers
 app.use("/api/v1/tours", require(`${__dirname}/route/api/tours`));
@@ -85,6 +74,14 @@ app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
 
 app.use(ErrorHandlers);
+if(process.env.NODE_ENV === "production")
+{
+  // set static folder
+  app.use(express.static('view/build'));
+  app.get('*', (req,res) => {
+    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
+  })
+}
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Route not found ${req.originalUrl}`, 404));
