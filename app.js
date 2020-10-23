@@ -1,4 +1,3 @@
-const path = require('path');
 const express = require("express");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
@@ -10,18 +9,10 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
 const compression = require('compression');
+const path = require('path');
 
 
 // setting up middleware
-
-if(process.env.NODE_ENV === "production")
-{
-  // set static folder
-  app.use(express.static('view/build'));
-  app.get('*', (req,res) => {
-    res.send(path.resolve(__dirname,'view','build','index.html'))
-  })
-}
 
 // set Security HTTP Headers
 app.use(helmet());
@@ -83,6 +74,15 @@ app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
 app.use(ErrorHandlers);
 // serve static assets in production
+
+if(process.env.NODE_ENV === "production")
+{
+  // set static folder
+  app.use(express.static('view/build'));
+  app.get('*', (req,res) => {
+    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
+  })
+}
 
 
 // app.all("*", (req, res, next) => {
