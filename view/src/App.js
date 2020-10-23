@@ -42,7 +42,7 @@ const App = () => {
       <Navbar />
       <Alert /> 
       <Switch>
-        <Route exact path="/" component={Tours} />
+        <Route exact path="" component={Tours} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/forgotpassword" component={ForgotPassword} />

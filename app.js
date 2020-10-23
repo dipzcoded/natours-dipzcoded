@@ -12,10 +12,6 @@ const ErrorHandlers = require("./middlewares/errorMiddlewares");
 const compression = require('compression');
 
 
-// setting pug template engine
-app.set('view engine', 'pug');
-app.set('views',path.join(__dirname,'dev-data/templates'));
-
 // setting up middleware
 
 // set Security HTTP Headers
