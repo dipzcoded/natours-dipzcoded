@@ -13,6 +13,16 @@ const compression = require('compression');
 
 
 // setting up middleware
+
+if(process.env.NODE_ENV === "production")
+{
+  // set static folder
+  app.use(express.static('view/build'));
+  app.get('*', (req,res) => {
+    res.send(path.resolve(__dirname,'view','build','index.html'))
+  })
+}
+
 // set Security HTTP Headers
 app.use(helmet());
 
@@ -56,14 +66,7 @@ app.use(
   })
 );
 
-if(process.env.NODE_ENV === "production")
-{
-  // set static folder
-  app.use(express.static('view/build'));
-  app.get('*', (req,res) => {
-    res.send(path.resolve(__dirname,'view','build','index.html'))
-  })
-}
+
 
 // Test middleware
 app.use((req, res, next) => {
