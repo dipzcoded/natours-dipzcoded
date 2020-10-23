@@ -15,7 +15,7 @@ const path = require('path');
 // setting up middleware
 
 // // set Security HTTP Headers
-app.use(helmet());
+// app.use(helmet());
 
 // if (process.env.NODE_ENV === "development") {
 //   app.use(morgan("dev"));
@@ -41,7 +41,7 @@ app.use(
 app.use(mongoSanitize());
 
 // // Data sanitiation againt XSS
-// app.use(xss());
+app.use(xss());
 
 // // Prevent parameter pollution
 app.use(
