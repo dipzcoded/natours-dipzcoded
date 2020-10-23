@@ -56,6 +56,15 @@ app.use(
   })
 );
 
+if(process.env.NODE_ENV === "production")
+{
+  // set static folder
+  app.use(express.static('view/build'));
+  app.get('*', (req,res) => {
+    res.send(path.resolve(__dirname,'view','build','index.html'))
+  })
+}
+
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -71,14 +80,7 @@ app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
 app.use(ErrorHandlers);
 // serve static assets in production
-if(process.env.NODE_ENV === "production")
-{
-  // set static folder
-  app.use(express.static('view/build'));
-  app.get('*', (req,res) => {
-    res.send(path.resolve(__dirname,'view','build','index.html'))
-  })
-}
+
 
 // app.all("*", (req, res, next) => {
 //   next(new ApiError(`Route not found ${req.originalUrl}`, 404));
