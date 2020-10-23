@@ -9,7 +9,7 @@
     "client": "npm start --prefix view",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "debug": "ndb server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix view && npm run build --prefix view"
+    "heroku-postbuild": "npm install --prefix view && npm run build --prefix view"
   },
   "author": "Akerele Oladipupo",
   "license": "ISC",
