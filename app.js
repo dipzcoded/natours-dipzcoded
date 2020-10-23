@@ -41,7 +41,7 @@ app.use(
 app.use(mongoSanitize());
 
 // // Data sanitiation againt XSS
-app.use(xss());
+// app.use(xss());
 
 // // Prevent parameter pollution
 app.use(
