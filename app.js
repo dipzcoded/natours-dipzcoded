@@ -73,6 +73,14 @@ app.use("/api/v1/auth", require(`${__dirname}/route/api/auth.js`));
 app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
 
+
+
+app.all("*", (req, res, next) => {
+  next(new ApiError(`Route not found ${req.originalUrl}`, 404));
+});
+
+app.use(ErrorHandlers);
+
 // serve static assets in production
 if(process.env.NODE_ENV === "production")
 {
@@ -82,11 +90,5 @@ if(process.env.NODE_ENV === "production")
     res.sendFile(path.resolve(__dirname,'view','build','index.html'))
   })
 }
-
-app.all("*", (req, res, next) => {
-  next(new ApiError(`Route not found ${req.originalUrl}`, 404));
-});
-
-app.use(ErrorHandlers);
 
 module.exports = app;
