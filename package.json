@@ -2,7 +2,7 @@
   "name": "natours",
   "version": "1.0.0",
   "description": "Learning Node Express and Monogodb",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "server": "nodemon server.js",
     "server:prod": "NODE_ENV=production nodemon server.js",
