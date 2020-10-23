@@ -13,16 +13,7 @@ const compression = require('compression');
 
 
 // setting up middleware
-// serve static assets in production
-if(process.env.NODE_ENV === "production")
-{
-  // set static folder
-  app.use(express.static('view/build'));
-  app.get('*', (req,res,next) => {
-    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
-    next();
-  })
-}
+
 
 // set Security HTTP Headers
 app.use(helmet());
@@ -83,13 +74,25 @@ app.use("/api/v1/auth", require(`${__dirname}/route/api/auth.js`));
 app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
 
+app.use(ErrorHandlers);
+
+// serve static assets in production
+if(process.env.NODE_ENV === "production")
+{
+  // set static folder
+  app.use(express.static('view/build'));
+  app.get('*', (req,res,next) => {
+    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
+    next();
+  })
+}
 
 
 app.all("*", (req, res, next) => {
   next(new ApiError(`Route not found ${req.originalUrl}`, 404));
 });
 
-app.use(ErrorHandlers);
+
 
 
 
