@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const mailGun = require('nodemailer-mailgun-transport');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
 
@@ -16,24 +17,25 @@ module.exports = class Email {
 
   newTransport()
   {
+
+    const auth = {
+      auth : {
+        api_key : process.env.MAILGUN_APIKEY,
+        domain : process.env.MAILGUN_DOMAIN
+      }
+    }
     if(process.env.NODE_ENV === "production")
     {
       // Sendgrid Transporter
-      return nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_PASSWORD,
-        },
-        // Activate in gmail "less secure app" option
-      });
+      return nodemailer.createTransport(mailGun(auth));
     }
     
     return nodemailer.createTransport({
-      service: 'gmail',
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASSWORD,
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
       },
       // Activate in gmail "less secure app" option
     });
