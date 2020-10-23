@@ -11,7 +11,7 @@ const app = require("./app");
 connectDB();
 
 // creating a port for our server
-const port = process.env.PORT || 5000;
+const port = 5000 || process.env.PORT ;
 
 // Starting up a server
 app.listen(port, () => {
