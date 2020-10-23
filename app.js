@@ -10,10 +10,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
 const compression = require('compression');
-const connectDB = require("./database/config");
 
-// connection mongoDB with my express framework
-connectDB();
 
 // setting up middleware
 // set Security HTTP Headers
