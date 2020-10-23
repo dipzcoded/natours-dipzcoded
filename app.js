@@ -14,14 +14,7 @@ const compression = require('compression');
 
 // setting up middleware
 // serve static assets in production
-if(process.env.NODE_ENV === "production")
-{
-  // set static folder
-  app.use(express.static('view/build'));
-  app.get('*', (req,res) => {
-    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
-  })
-}
+
 
 // set Security HTTP Headers
 app.use(helmet());
@@ -71,6 +64,15 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
+
+if(process.env.NODE_ENV === "production")
+{
+  // set static folder
+  app.use(express.static('view/build'));
+  app.get('*', (req,res) => {
+    res.sendFile(path.resolve(__dirname,'view','build','index.html'))
+  })
+}
 
 // compressing the data
 app.use(compression());
