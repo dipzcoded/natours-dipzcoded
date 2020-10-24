@@ -44,11 +44,7 @@ export default function(state = initialState, action)
         case LOGIN_SUCCESS :
         case UPDATE_PASSWORD :
         case RESET_PASSWORD_SUCCESS :    
-        Cookies.set('jwt', payload.token,{expires : 90 });
-        if(process.env.NODE_ENV === "production")
-        {
-            Cookies.secure = true;
-        }
+        Cookies.set('jwt', payload.token,{expires : 90, secure : true });
         return{
             ...state,
             ...payload,
