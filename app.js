@@ -14,9 +14,6 @@ const path = require('path');
 
 // setting up middleware
 
-// // set Security HTTP Headers
-// app.use(helmet());
-
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -37,6 +34,9 @@ app.use(
   })
 );
 
+
+// // set Security HTTP Headers
+app.use(helmet());
 
 app.use(compression())
 
