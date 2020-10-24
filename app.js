@@ -36,7 +36,7 @@ app.use(
 
 
 // // set Security HTTP Headers
-app.use(helmet());
+// app.use(helmet());
 
 app.use(compression())
 
