@@ -73,7 +73,7 @@ const AccountSettings = ({auth : {user}, updateUser, setAlert}) => {
             </div>
 
             <div className="form__group form__photo-upload">
-            {user && (user.photo ? (<img className="form__user-photo" src={`/img/users/${user.photo}`} alt={`${user.name} photos`} />) : (<img className="form__user-photo invert" src={userIcon} alt="default user icon"/>))}
+            {user && (user.photo ? (<img className="form__user-photo" src={`/photo/${user.photo}`} alt={`${user.name} photos`} />) : (<img className="form__user-photo invert" src={userIcon} alt="default user icon"/>))}
             <input type="file"   accept="image/*" name="photo"   onChange={onPhotoChange} />
             <label htmlFor="photo">Choose new photo</label>
             </div>
