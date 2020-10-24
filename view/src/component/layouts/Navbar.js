@@ -15,7 +15,7 @@ const Navbar = ({auth : {isAuthenticated, isLoading, user}, logOut, history}) =>
       {user && (
          <Link to="/user/account" className="nav__el">
          {user.photo ? (
-           <img src={`../view/photo/users/${user.photo}`} alt={user.name} className="nav__user-img" />
+           <img src={`/img/users/${user.photo}`} alt={user.name} className="nav__user-img" />
          ) : <img src={User} alt={user.name} className="nav__user-img" /> } 
          <span>{user.name.split(' ')[0]}</span>
        </Link>
