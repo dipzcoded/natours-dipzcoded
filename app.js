@@ -17,18 +17,18 @@ const path = require('path');
 // // set Security HTTP Headers
 // app.use(helmet());
 
-// if (process.env.NODE_ENV === "development") {
-//   app.use(morgan("dev"));
-// }
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 // // Limit Request from same API
-// const limiter = rateLimit({
-//   max: 100,
-//   windowMs: 60 * 60 * 1000,
-//   message: "Too many request from this IP, please try again in an hour!",
-// });
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many request from this IP, please try again in an hour!",
+});
 
-// app.use("/api", limiter);
+app.use("/api", limiter);
 
 // Body parser, reading data from body into req.body
 app.use(
@@ -36,6 +36,9 @@ app.use(
     limit: "10kb",
   })
 );
+
+
+app.use(compression())
 
 // // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
