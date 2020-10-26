@@ -14,6 +14,15 @@ connectDB();
 const port = process.env.PORT || 5000;
 
 // Starting up a server
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App running on port ${port}.`);
 });
+
+
+// 
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED. Shutting down gracefully');
+    server.close(() => {
+      console.log('Process terminated!')
+    })
+})
