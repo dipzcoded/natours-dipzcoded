@@ -13,7 +13,7 @@ exports.getCheckoutSession = async (req,res) => {
         const session = await stripe.checkout.sessions.create({
 
             payment_method_types : ['card'],
-            success_url : `http://localhost:3000/?tour=${req.params.tourId}&user=${req.user.id}&price=${tour.price}`,
+            success_url : 'http://localhost:3000/user/bookings',
             cancel_url : `http://localhost:3000/tours/${tour.slug}/${req.params.tourId}`,
             customer_email : req.user.email,
             client_reference_id : req.params.tourId,
@@ -85,6 +85,16 @@ exports.createBookingByUser = async (req,res) => {
 
         // console.log(error.message);
         res.status(500).send('Server Error!');
+        
+    }
+
+}
+
+exports.webhookCheckout = async (req, res) => {
+
+    try {
+        
+    } catch (error) {
         
     }
 
