@@ -10,6 +10,7 @@ const hpp = require("hpp");
 const ErrorHandlers = require("./middlewares/errorMiddlewares");
 const compression = require('compression');
 const path = require('path');
+const cors = require('cors');
 const {webhookCheckout} = require('./controllers/bookingController')
 
 
@@ -28,16 +29,22 @@ const limiter = rateLimit({
 
 app.use("/api", limiter);
 
+// implement cors--cross origin resource sharing
+app.use(cors());
+
+app.options('*', cors());
+// app.options('/api/v1/tour/:id',cors())
+
+
+// stripe webhooks
+app.post('/webhook-checkout', express.raw({type : 'application/json'}), webhookCheckout)
+
 // Body parser, reading data from body into req.body
 app.use(
   express.json({
     limit: "10kb",
   })
 );
-
-
-// // set Security HTTP Headers
-// app.use(helmet());
 
 
 app.use(compression())
@@ -77,7 +84,6 @@ app.use("/api/v1/users", require(`${__dirname}/route/api/users`));
 app.use("/api/v1/auth", require(`${__dirname}/route/api/auth.js`));
 app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
-app.post('/webhook-checkout', webhookCheckout)
 app.use('/photo',express.static(path.join(__dirname, '/photo')))
 // serve static assets in production
 app.use(ErrorHandlers);

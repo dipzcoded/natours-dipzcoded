@@ -2,7 +2,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const Tour = require('../model/Tour');
 const Booking = require('../model/Booking');
 const {getAllOne,getOne,createOne,deleteOne,updateOne} = require('../controllers/factoryHandler')
-
+const User = require('../model/User');
 
 exports.getCheckoutSession = async (req,res) => {
     try {
@@ -50,6 +50,7 @@ exports.getBookingByUser = async (req,res) => {
         
         const bookings = await Booking.find({user : req.user.id})
 
+
         // find tour with the id
         const tourIds = bookings.map(el => el.tour);
         const tours = await Tour.find({_id : {$in : tourIds}});
@@ -66,37 +67,42 @@ exports.getBookingByUser = async (req,res) => {
 
 }
 
-exports.createBookingByUser = async (req,res) => {
+const createBookingCheckout = async session => {
+try {
 
-    const {tour, user, price} = req.body;
-    try {
-        let bookings = new Booking({
-            tour,
-            user,
-            price
-        });
-        
-        
-        await bookings.save();
+    const tour = session.client_reference_id;
+    const  user = (await User.findOne({email : session.customer_email})).id;
+    const price = session.line_items[0].amount / 100;
 
-        return res.status(201).json({msg : "Booked successfully!!" })
-        
-    } catch (error) {
-
-        // console.log(error.message);
-        res.status(500).send('Server Error!');
-        
-    }
+    await Booking.create({
+        tour,
+        user,
+        price
+    })
+    
+} catch (error) {
+    
+}
 
 }
 
-exports.webhookCheckout = async (req, res) => {
 
+exports.webhookCheckout = async (req, res, next) => {
+    let event;
     try {
+
+        const signature = req.headers['stripe-signature'];
+         event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOKS_SECRET);
         
     } catch (error) {
-        
+        return res.status(400).send(`Webhook Error!: ${error.message}`)
     }
+
+    if(event.type === 'checkout.session.completed')
+    {
+        createBookingCheckout(event.data.object);
+    }
+    res.status(200).json({recieved : true})
 
 }
 
