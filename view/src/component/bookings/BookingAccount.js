@@ -8,7 +8,7 @@ import queryString from 'query-string';
 import {setAlert} from '../../actions/alert'
 import {withRouter} from 'react-router-dom'
 import NatoursFav from '../../img/favicon.png'
-const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, history}) => {
+const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, history, location}) => {
 
     useEffect(() => {
         getBookingsByUser();
