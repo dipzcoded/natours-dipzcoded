@@ -10,14 +10,6 @@ import {withRouter} from 'react-router-dom'
 import NatoursFav from '../../img/favicon.png'
 const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, history}) => {
 
-
-    function getFaviconEl() {
-        return document.getElementById("favicon");
-      }
-
-      const favicon = getFaviconEl();
-      favicon.href= NatoursFav;
-
     useEffect(() => {
         getBookingsByUser();
         
@@ -28,10 +20,6 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, his
             {
             setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success',3000)
                 history.push('/user/bookings');
-                window.addEventListener("popstate", e => {
-                    // Nope, go back to your page
-                    history.go(1);
-                  });
             }
         }
 
