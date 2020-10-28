@@ -84,7 +84,6 @@ app.use("/api/v1/users", require(`${__dirname}/route/api/users`));
 app.use("/api/v1/auth", require(`${__dirname}/route/api/auth.js`));
 app.use("/api/v1/reviews", require(`${__dirname}/route/api/reviews`));
 app.use("/api/v1/booking", require(`${__dirname}/route/api/bookings`));
-app.use('/photo',express.static(path.join(__dirname, '/photo')))
 // serve static assets in production
 app.use(ErrorHandlers);
 
@@ -98,6 +97,8 @@ if(process.env.NODE_ENV == "production")
     res.sendFile(path.join(__dirname,'view','build','index.html'))
   })
 }
+
+app.use('/photo',express.static(path.join(__dirname, '/photo')))
 
 
 
