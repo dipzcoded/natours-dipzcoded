@@ -19,7 +19,9 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, his
             if(parse.alert)
             {
             setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success',3000)
-                history.push('/user/bookings');
+                setTimeout(() => {
+                    history.push('/user/bookings');
+                },4000)
             }
         }
 
