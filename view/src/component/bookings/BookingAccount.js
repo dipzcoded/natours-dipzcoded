@@ -26,7 +26,7 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, his
             const parse = queryString.parse(location.search)
             if(parse.alert)
             {
-                dispatch(setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success',3000))
+            setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success',3000)
                 history.push('/user/bookings');
                 window.addEventListener("popstate", e => {
                     // Nope, go back to your page
