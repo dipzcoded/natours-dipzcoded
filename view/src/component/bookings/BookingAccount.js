@@ -4,10 +4,37 @@ import {getBookingsByUser} from '../../actions/bookings'
 import ToursItem from '../overview/ToursItem';
 import Loader from '../layouts/Loader'
 import {Helmet} from 'react-helmet'
-const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}}) => {
+import queryString from 'query-string';
+import {setAlert} from '../../actions/alert'
+import {withRouter} from 'react-router-dom'
+import NatoursFav from '../../img/favicon.png'
+const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, history}) => {
+
+
+    function getFaviconEl() {
+        return document.getElementById("favicon");
+      }
+
+      const favicon = getFaviconEl();
+      favicon.href= NatoursFav;
 
     useEffect(() => {
         getBookingsByUser();
+        
+        if(location.search)
+        {
+            const parse = queryString.parse(location.search)
+            if(parse.alert)
+            {
+                dispatch(setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success',3000))
+                history.push('/user/bookings');
+                window.addEventListener("popstate", e => {
+                    // Nope, go back to your page
+                    history.go(1);
+                  });
+            }
+        }
+
     },[])
 
     // creating the touritem card
@@ -40,4 +67,4 @@ const mapStateToProps = state => ({
     booking : state.booking
 })
 
-export default connect(mapStateToProps,{getBookingsByUser})(BookingAccount)
+export default connect(mapStateToProps,{getBookingsByUser})(withRouter(BookingAccount))
