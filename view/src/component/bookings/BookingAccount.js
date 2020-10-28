@@ -16,16 +16,16 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, his
         if(location.search)
         {
             const parse = queryString.parse(location.search)
-            if(parse.alert)
+            if(parse)
             {
-            setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success',3000)
+            setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success')
                 setTimeout(() => {
                     history.push('/user/bookings');
-                },4000)
+                },5000)
             }
         }
 
-    },[])
+    },[location,getBookingsByUser, history])
 
     // creating the touritem card
     const bookedTourCard = bookings.map((booking) => (
