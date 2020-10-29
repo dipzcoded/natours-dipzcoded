@@ -7,7 +7,6 @@ import {Helmet} from 'react-helmet'
 import queryString from 'query-string';
 import {setAlert} from '../../actions/alert'
 import {withRouter} from 'react-router-dom'
-import NatoursFav from '../../img/favicon.png'
 const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, history, location}) => {
 
     useEffect(() => {
@@ -19,9 +18,6 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, his
             if(parse)
             {
             setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success')
-                setTimeout(() => {
-                    history.push('/user/bookings');
-                },5000)
             }
         }
 
