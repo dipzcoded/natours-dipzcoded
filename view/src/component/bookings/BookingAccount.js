@@ -7,7 +7,7 @@ import {Helmet} from 'react-helmet'
 import queryString from 'query-string';
 import {setAlert} from '../../actions/alert'
 import {withRouter} from 'react-router-dom'
-const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, history, location}) => {
+const BookingAccount = ({getBookingsByUser, setAlert, booking : {bookings, isLoading}, history, location}) => {
 
     useEffect(() => {
         getBookingsByUser();
@@ -15,10 +15,17 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, his
         if(location.search)
         {
             const parse = queryString.parse(location.search)
-            if(parse)
+            console.log(parse.alert);
+            if(parse.alert === "booking")
             {
-            setAlert('Your booking was successful! Please check your email for a confirmation. if your booking doesnt show up here immediatly, please come back later.', 'success')
+                setAlert('booking successful','success')
+                history.push('/user/bookings');
+                window.history.pushState(null, document.title, window.location.href);
+                window.addEventListener('popstate', function (event){
+                    window.history.pushState(null, document.title,  window.location.href);
+                });
             }
+           
         }
 
     },[location,getBookingsByUser, history])
@@ -38,7 +45,9 @@ const BookingAccount = ({getBookingsByUser, booking : {bookings, isLoading}, his
                 </Helmet>
                 <div className="card-container">
                    {bookings.length === 0 ? (<h1 style={{
-                       gridColumn : " 1 / -1"
+                       gridColumn : " 1 / -1",
+                       justifySelf : "center",
+                       fontSize : "20px"
                    }}> No Bookings Made By You</h1>) : (
                     bookedTourCard
                    )}
@@ -53,4 +62,4 @@ const mapStateToProps = state => ({
     booking : state.booking
 })
 
-export default connect(mapStateToProps,{getBookingsByUser})(withRouter(BookingAccount))
+export default connect(mapStateToProps,{getBookingsByUser,setAlert})(withRouter(BookingAccount))

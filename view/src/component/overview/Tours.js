@@ -21,6 +21,13 @@ const Tours = ({tours : {tours},getAllTours, location,createBookings, isAuthenti
         }
     },[getAllTours, location])
 
+    if(isAuthenticated)
+    {
+        window.addEventListener('popstate', function (event){
+            window.history.pushState(null, document.title,  window.location.href);
+        });
+    }
+
 
 
 
