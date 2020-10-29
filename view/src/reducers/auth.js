@@ -39,7 +39,7 @@ export default function(state = initialState, action)
             isLoading : false,
             user : payload.user
         }
-
+        
         case REGISTER_SUCCESS : 
         case LOGIN_SUCCESS :
         case UPDATE_PASSWORD :
